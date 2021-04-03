@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    {% load leaflet_tags %}
+    <head>
+        {% leaflet_js %}
+        {% leaflet_css %}
+     {% include 'include/includecss.html' %}
+
+    <link rel="stylesheet"  href="{% static 'home/staffs/css/bootstrap.css' %}"  />
+    <!-- Custom Styles-->
+    <link rel="stylesheet"  href="{% static 'home/css/menu.css' %}"  />
+    <link rel="stylesheet"  href="{% static 'home/staffs/css/addboun.css' %}"  />
+    <link type="text/css" rel="stylesheet" href="{% static 'home/staffs/css/web.assets_common.0.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'home/staffs/css/web.assets_backend.0.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'home/staffs/css/web.assets_backend.1.css' %}"/>
+    <!-- show map -->
+    <script src="{% static 'home/staffs/css/jsi18n/' %}">  </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/ol3/4.6.5/ol.css" type="text/css" media="all" rel="stylesheet">
+    <link  href="{% static 'home/staffs/css/ol3.css' %}"  type="text/css" media="all" rel="stylesheet" />
+    <script src="{% static 'home/staffs/js/jquery.js' %}">  </script>
+    <script src="{% static 'home/staffs/js/ol.js' %}">  </script>
+    <script src="{% static 'home/staffs/js/jquery.init.js' %}">  </script>
+    <script src="{% static 'home/staffs/js/OLMapWidget.js' %}">  </script>
+    <script src="{% static 'home/staffs/js/core.js' %}">  </script>
+    <script src="{% static 'home/staffs/js/RelatedObjectLookups.js' %}">  </script>
+    <script src="{% static 'home/staffs/js/actions.js/' %}">  </script>
+    <script src="{% static 'home/staffs/js/urlify.js' %}">  </script>
+    <script src="{% static 'home/staffs/js/prepopulate.js' %}">  </script>
+    <script src="{% static 'home/staffs/js/xregexp.js' %}">  </script>
+    </head>
+    <body>
+        <div id="wrapper">
+            {% include 'include/base.html' %}
+            <div id="page-wrapper">
+                <div class="header">
+                    <div class="row user-infos cyruxx">
+                        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1"></div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h1 class="panel-title">Thêm nhân viên</h1>
+                            </div>
+                            <div class="panel-body">
+                                {% if form.errors %}
+                                {% for field in form %}
+                                {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                                {% endfor %}
+                                {% endfor %}
+                                {% endif %}
+                                <!-- DỰ ÁN MỚI -->
+                                <div class="o_content">
+                                    <div class="o_view_controller">
+                                        <div class="o_form_view o_form_editable">
+                                            <div class="o_form_sheet_bg">
+                                                <div class="clearfix o_form_sheet">
+                                                    <div class="o_group">
+                                                        <form class="form-inline my-2 my-lg-0"   method="POST">
+                                                            {% csrf_token %}
+                                                            <table class="o_group o_inner_group o_group_col_6">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier"  for="id_ma_nhan_vien">Mã nhân viên(<span style="color:red;">*</span>):</label></td>
+                                                                        <td style="width: 100%;"><input class="o_field_char o_field_widget o_input o_required_modifier" type="text" name="ma_nhan_vien" maxlength="100" required oninvalid="this.setCustomValidity('Vui lòng nhập mã nhân viên.')" oninput="setCustomValidity('')" id="id_ma_nhan_vien" ></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier" for="id_hoten">Họ và tên(<span style="color:red;">*</span>):</label></td>
+                                                                        <td style="width: 100%;"><input class="o_field_char o_field_widget o_input o_required_modifier"type="text" name="hoten"maxlength="100" required oninvalid="this.setCustomValidity('Vui lòng nhập họ tên nhân viên.')" oninput="setCustomValidity('')" id="id_hoten"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier" for="id_gioitinh">Giới tính:</label></td>
+                                                                        <td style="width: 100%;">{{form.gioitinh}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table><table class="o_group o_inner_group o_group_col_6"><tbody><tr>
+                                                                <td class="o_td_label"><label class="o_form_label o_required_modifier" for="id_dienthoai">Điện thoại(<span style="color:red;">*</span>):</label></td>
+                                                                <td style="width: 100%;"><input class="o_field_char o_field_widget o_input o_required_modifier"type="number" name="dienthoai" maxlength="12" required id="id_dienthoai"></td>
+                                                            </tr>  
+                                                            <tr>
+                                                                <td class="o_td_label"><label class="o_form_label o_required_modifier" for="id_diachi">Địa chỉ:</label></td>
+                                                                <td style="width: 100%;"><input style="height:50px;" class="o_field_char o_field_widget o_input o_required_modifier" type="text" name="diachi"maxlength="255" id="id_diachi"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div style="text-align:center;">
+                                                        <span class="badge badge-danger" style=" font-size:12px;">Trường có dấu (*) bắt buột phải nhập.</span>
+                                                    </div>
+                                                    <div class="post_center">
+                                                        <button class="submit-btn" type="submit" >Thêm</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <a class="quayve" href="{% url 'qlcayxanh:lists_staff' %}">Quay về danh sách</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--                    -->
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+        {% include 'include/filescript.html' %}
+    <script src="{% static 'home/staffs/js/validuser.js' %}"></script>
+    </body>
+</html>
+                

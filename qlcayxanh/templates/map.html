@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    {% load leaflet_tags %}
+    <head>
+        {% leaflet_js %}
+        {% leaflet_css %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Quản lý cây xanh đô thị</title>
+        <!-- Google Fonts-->
+        <link rel="icon" type="image/png" href="{% static 'home/img/favicon.png' %}"/>
+        <link rel="stylesheet"  href="{% static 'home/css/font-awesome.css' %}"  />
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+        <!-- Bootstrap Core CSS -->
+        <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/menu.css' %}" rel="stylesheet">
+        <!-- Custom CSS -->
+        <link href="{% static 'assets/css/bootstrap-custom.css' %}"rel="stylesheet">
+        <link href="{% static 'assets/css/map.css' %}"rel="stylesheet">
+        <!-- JQuery/JQueryUI  -->
+        <script src="{% static 'assets/js/jquery.js' %}"></script>
+        <!-- menu layer -->
+        <script src="{% static 'assets/plugins/layerTree/js/layer-tree.js' %}"></script>
+        <link href="{% static 'assets/plugins/layerTree/dist/css/styles.min.css' %}" rel='stylesheet' />
+        <link href="{% static 'assets/css/map.css' %}" rel='stylesheet' />
+        <link href="{% static 'assets/plugins/layerTree/dist/css/layer-tree-group-settings.css' %}" rel='stylesheet' />
+        <!-- JQuery UI -->
+        <link rel="stylesheet" href="{% static 'assets/jquery-ui/jquery-ui.min.css' %}" type="text/css">
+        <script src="{% static 'assets/jquery-ui/jquery-ui.js' %}"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- print -->
+        <script type="text/javascript" src="{% static 'assets/js/leaflet.ajax.js' %}">  </script>
+        <script type="text/javascript" src="{% static 'assets/js/leaflet.browser.print.min.js' %}">  </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <!-- js cần có để hiển thị tọa độ -->
+        <link rel="styleshert" type="text/css" href="{% static 'assets/routing/leaflet-routing-machine.css' %}">
+        <link rel="styleshert" type="text/css" href="{% static 'assets/groupedlayercontrol/leaflet.groupedlayercontrol.css' %}">
+        <script type="text/javascript" src="{% static 'assets/groupedlayercontrol/leaflet.groupedlayercontrol.js' %}">  </script>
+        <script type="text/javascript" src="{% static 'assets/routing/leaflet-routing-machine.js' %}">  </script>
+        <!-- search -->
+        <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.0/dist/leaflet.css" /> -->
+        <link rel="stylesheet" href="{% static 'assets/src/leaflet-search.css' %}" />
+        <!-- map -->
+        <link rel="stylesheet" href="{% static 'assets/src/leaflet.css' %}" />
+        <script src="https://cdn-geoweb.s3.amazonaws.com/esri-leaflet/0.0.1-beta.5/esri-leaflet.js"></script>       
+        <!-- điểu khiển các lớp bản đồ nền -->
+        <link rel="stylesheet" href="{% static 'assets/css/control.layers.minimap.css' %}" />
+        <script src="{% static 'assets/js/L.Control.Layers.Minimap.js' %}"></script>
+        <style>
+            #gis{
+            height: 510px;
+            position: absolute;
+            top: 70px;
+            bottom: 0;
+            width: 100%;
+            z-index: 0;}
+            a.leaflet-bar-part{
+            display:none;
+            }
+            .leaflet-label-marker {
+  background-color: #fefdcb;
+  border: 3px solid black;
+  border-radius: 0;
+  color: black;
+  font-weight: 500;
+  opacity: 1;
+  padding: 3px;
+}
+        </style>
+        <!--  -->
+    </head>
+    <body>
+        <div id="wrapper">
+            <!-- Menu ngang -->
+            <nav class="navbar navbar-default top-navbar navbar-fixed-top" role="navigation">
+                <!-- Top Menu Items -->
+                <ul class="nav navbar-top-links navbar-left" >
+                    <li  class="dropdown">
+                        <a class="dropdown-toggle" href="{% url 'index' %}" >
+                        <i class="fa fa-backward"> </i> Trang chủ
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-top-links navbar-right">
+                    <!-- Bookmarks -->
+                    <!-- Bookmarks -->
+                    <!-- Bookmarks -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-comments-o" aria-hidden="true"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="" >
+                                Không có thông báo.
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- /.dropdown -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <img src="{% static 'home/img/7.jpg' %}" alt="user" class="profile-pic me-2"> {{user}} <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="" data-toggle="modal" data-target="#userprofile"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                                Thông tin người dùng
+                                </a>
+                            </li>
+                            <li><a href="{% url 'qlcayxanh:change_password' %}"  ><i class="fa fa-cog fa-spin"></i>
+                                Đổi mật khẩu
+                                </a>
+                            </li>
+                            {% if user.is_superuser  %}
+                            <li><a href="{% url 'qlcayxanh:users' %}" ><i class="fa fa-users" aria-hidden="true"></i>
+                                Tài khoản hệ thống
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li class="divider"></li>
+                            <li><a href="{% url 'logout' %}"><i class="fa fa-power-off text-danger"></i> Đăng xuất</a>
+                            </li>
+                        </ul>
+                        <!-- /.dropdown-user -->
+                    </li>
+                    <!-- Đăng xuất -->
+                    <li class="dropdown">
+                    <li>
+                        <a href="{% url 'logout' %}"><i class="fa fa-sign-out text-danger"></i></a>
+                        <!-- /.dropdown-alerts -->
+                    </li>
+                </ul>
+            </nav>
+            <!-- Load Map Div -->
+            <div>
+                <!--Map -->
+                <div >  {% leaflet_map "gis" callback="window.our_layers" %}</div>
+                <div class="legend">
+                    <div><strong>Chú dẫn</strong></div>
+                    <p><i style="background:green;"> </i><span>Cây xanh </span><br></p>
+                    <p><i style="background:red;"></i><span> Đường giao thông </span><br></p>
+                    <p><i style="background:#2473e2;"></i><span> Ranh giới</span></p>
+                </div>
+                <div class="statiss">
+                    <a href="{% url 'qlcayxanh:export-pdf'%}" title="Thống kê cây"label="Thống kê cây"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:24px;text-align: center;margin-top: 2px;"></i><span> </span></a>
+                </div>
+            </div>
+            <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>            
+            <script src="{% static 'assets/src/leaflet-search.js' %}"></script>
+            <!-- end load map -->
+            <!--  -->
+            <!--  -->
+        </div>
+        <!-- Modal  thôgn tin người dùng-->
+        <div class="modall fade" id="userprofile" tabindex="-1" role="dialog" aria-labelledby="userprofileLabel" aria-hidden="true">
+            <div class="modall-dialog" role="document">
+                <div class="modall-content">
+                    <div class="modall-header" style=" background: #e5f3f3; min-height: 16.43px;padding: 15px;border-bottom: 1px solid #e5e5e5;">
+                        <h4 class="modall-title" style="text-align:center;color:#8BC34A; " id="userprofileLabel">Thông tin người dùng
+                        </h4>
+                        <button style=" margin-top: -25px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modall-body">
+                        <table class="table table-user-information">
+                            <tbody>
+                                <tr>
+                                    <th >Tên đăng nhập:</th>
+                                    <td >{{ user }}</td>
+                                </tr>
+                                <tr>
+                                    <th style="border-top: 1px solid #ddd;">Họ và tên:</th>
+                                    <td style="border-top: 1px solid #ddd;">{{ user.last_name }} {{ user.first_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th style="border-top: 1px solid #ddd;">Email:</th>
+                                    <td style="border-top: 1px solid #ddd;">{{ user.email }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modall-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+        <div class="panell-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                    <h4 class="panel-title" id="hidee">
+                        <button class="dong" role="button" style="width:100%;" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Danh sách cây xanh
+                        </button>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="panel-body">
+                        <div>
+                            <input id="myInput" class="form-control"type="text"style="float:right;width:20%;margin-right:20px;border: 1px solid #dff0d8;padding: 10px;border-radius: 10px;" placeholder="Nhập thông tin cần tìm">
+                            <div class="form-group" style="float:left;">
+                                <!--		Show Numbers Of Rows 		-->
+                                <label class="op" style="width: 250px;">
+                                    <select  name="state" id="maxRows"style="width:45%;border: 1px solid #dff0d8;padding: 10px;border-radius: 10px;">
+                                        <option value="5000" style="font-size: small;">Tất cả</option>
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                        <option value="50">50</option>
+                                        <option value="70">70</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    Chọn số hàng
+                                </label>
+                                <p id="demo"></p>
+                            </div>
+                        </div>
+                        <table class="listdata" id="tblData">
+                            <thead>
+                                <tr class="thth">
+                                    <th style="width: 80px;">Mã số</th>
+                                    <th style="width: 157px;">Tên cây</th>
+                                    <th style="width: 157px; ">Loại cây</th>
+                                    <th style="width: 100px;">Chiều cao</th>
+                                    <th style="width: 140px;">Ngày trồng</th>
+                                    <th style="width: 120px;">Tình trạng</th>
+                                    <th style="width: 210px;">Đặc điểm</th>
+                                    <th style="width: 200px;">Vị trí</th>
+                                    <th style="width: 150px;">Tên đường</th>
+                                </tr>
+                            </thead>
+                            <tbody  id= "table-id">
+                                {% for data in listtrees %}
+                                <tr class="content" id="info{{ data.ma_cay }}" >
+                                    <td style="width: 80px;">{{ data.ma_cay }}</td>
+                                    <td style="width: 157px;">{{ data.ten_cay }}</td>
+                                    <td style="width: 157px;">{{ data.loaicay_id }}</td>
+                                    <td style="width: 100px;">{{ data.chieucao }} m</td>
+                                    <td style="width: 140px;">{{ data.ngaytrong|date:"d/m/Y" }}</td>
+                                    <td style="width: 120px;">{{ data.tinhtrang_id }}</td>
+                                    <td style="width: 210px;">{{ data.dacdiem }}</td>
+                                    <td style="width: 200px;">{{ data.vitri }}</td>
+                                    <td style="width: 150px;">{{ data.duong_id }}</td>
+                                </tr>
+                                {% endfor%}
+                            </tbody>
+                        </table>
+                        <!--		Start Pagination -->
+                        <div class='pagination-container' >
+                            <ul class="pagination">
+                                <li data-page="prev" >
+                                    <span> < <span class="sr-only">(current)</span></span>
+                                </li>
+                                <!--	Here the JS Function Will Add the Rows -->
+                                <li data-page="next" id="prev">
+                                    <span> > <span class="sr-only">(current)</span></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- End Pagination -->   
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- js danh sách cây xanh show button -->
+        <script>
+            $('#accordion').on('shown.bs.collapse', function () {
+            
+            var panel = $(this).find('.in');
+            
+            $('html, body').animate({
+                scrollTop: panel.offset().top
+            }, 500);
+            
+            });
+        </script>
+        <!-- show data -->
+        <script type="text/javascript">
+            function our_layers(map,options){
+              
+            //    Hiển thị Quần đảo Hoàng Sa và Trường Sa
+                    var gIcon = L.icon({
+                        iconUrl: "/static/assets/images/vn.jpg",
+                        iconSize:     [40,20 ], // size of the ico
+                            });
+            L.marker([16.482839176122983,111.719970703125], {icon: gIcon}).addTo(map).bindPopup("Quần Đảo Hoàng Sa");
+            L.marker([10.719262873874907,115.83239144722667], {icon: gIcon}).addTo(map).bindPopup("Quần Đảo Trường Sa");
+            //---------------------------------------------------------/
+            //    child show cây xanh    
+            var child1 = new L.GeoJSON.AJAX("{% url 'qlcayxanh:childtree' %}",{
+                            onEachFeature: function(feature,layer){
+                                layer.setIcon(greenIcon);
+                                var featureDate = new Date(feature.properties.ngaytrong);//định dạng ngày d/m/y
+                                layer.on('click', function(e) {
+                                        lat = feature.geometry.coordinates[1];//click hiển thị view tới vị trí zoom
+                                        lng = feature.geometry.coordinates[0];          
+                                            map.setView([lat,lng],20);
+                                    });
+                                layer.bindPopup('<p style="font-size:14px; font-weight:bold;border-bottom: 1px solid black">'+feature.properties.pk+ ' - '+ feature.properties.ten_cay+'</p>'
+                                                +'<p>Mã cây : <b> '+feature.properties.pk+'</b></p>'                                   
+                                                +'<p>Loại cây: <b>  ' + feature.properties.loaicay_id +'</b></p>'
+                                                +'<p> Chiều cao: <b>' + feature.properties.chieucao +'cm </b></p>'
+                                                +'<p>Ngày trồng : <b> '+  featureDate.toLocaleDateString('en-GB')+'</b></p>'
+                                                +'<p>Tình trạng: <b> '+ feature.properties.tinhtrang_id +'</b></p>'
+                                                +'<p> Vị trí : <b>' + feature.properties.vitri + '</b></p>'
+                                                +'<p>Đặc điểm : <b>' + feature.properties.dacdiem + '</b></p>'
+                                                +'<p>Tên đường : <b>' + feature.properties.duong_id + '</b></p>'
+                                                // +'<p>Tọa độ : <b>' + feature.geometry.coordinates + '</b></p>'
+                                             );
+                                                
+                                                
+                            },           
+                        });
+            // end var
+            //    child show đường giao thông  
+                    var child2 = new L.GeoJSON.AJAX("{% url 'qlcayxanh:childstreet'%}",{
+                        color:"red",
+                                onEachFeature: function(feature,layer){
+                                    layer.on('click', function (e) {
+                                        map.setView(e.latlng, 18)
+                                        });
+                                    layer.bindPopup('<p style="font-size:14px; font-weight:bold;border-bottom: 1px solid black">'+feature.properties.pk+ ' - '+feature.properties.ten_duong+'</p>'
+                                                        +'<p> Mã đường : <b>' + feature.properties.pk + '</b></p>'
+                                                        +'<p>Ghi chú : <b>' + feature.properties.ghichu + '</b></p>'
+                                                        +'<p>Ranh giới: <b>  ' + feature.properties.ranh_gioi_id +'</b></p>');
+                                    }, 
+
+                                });
+
+                // end var
+                  var labels = {};
+            //    child show ranh giới  
+                    var child3 = new L.GeoJSON.AJAX("{% url 'qlcayxanh:childboun'%}",{
+                                onEachFeature: function(feature,layer){
+
+                                    layer.on('click', function (e) {
+                                        map.setView(e.latlng, 18)
+                                        });
+                                    layer.bindPopup('<p style="font-size:14px; font-weight:bold;border-bottom: 1px solid black">'+feature.properties.pk+ ' - '+feature.properties.ten_ranh_gioi+'</p>'
+                                                    +'<p> Mã ranh giới : <b>' + feature.properties.pk + '</b></p>'
+                                                    +'<p> Loại ranh giới : <b>' + feature.properties.type_ranh_gioi + '</b></p>'
+                                                    +'<p>Ghi chú : <b>' + feature.properties.ghichu + '</b></p>');
+                                },
+
+                            });
+
+            // end var
+            var greenIcon = new L.Icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                    });
+            
+                    // click 
+
+                    {% for item in listtrees %}
+                    var child{{item.ma_cay}}= new L.GeoJSON.AJAX("{% url 'qlcayxanh:class' id=item.ma_cay %}",{
+                        onEachFeature: function(feature,layer){
+                            layer.setIcon(greenIcon);
+                            layer.on('click', function(e) {
+                                        lat = feature.geometry.coordinates[1];
+                                        lng = feature.geometry.coordinates[0];          
+                                            map.setView([lat,lng],20);
+                                    });
+                                    
+                         },           
+                    });
+                    {% endfor %}
+            // end click
+            
+                
+                var baseLayers = {
+                
+                };
+               
+                // var group
+                 // var group
+                var groupedOverlays = {
+                    "Lớp dữ liệu": {
+                    
+                        "<i class='	fa fa-map-marker'></i> Lớp cây xanh": child1,
+                        "<i class='	fa fa-line-chart'></i> Lớp đường giao thông": child2,
+                        "<i class=' fa fa-industry'></i> Lớp ranh giới": child3,
+                    }   
+                    };
+                   
+            //end var 
+             // zoom control options
+            
+            
+                L.control.browserPrint({title: 'In',documentTitle: 'WEBGIS-QUẢN LÝ CÂY XANH ĐÔ THỊ QUẢNG NAM'}).addTo(map)
+                L.control.groupedLayers(baseLayers,groupedOverlays).addTo(map);
+            
+                
+                // 
+                var markers = {};
+            
+            // click đôi show tree on map
+            {% for item in listtrees %}
+                document.getElementById('info{{item.ma_cay}}').ondblclick = function(e) {
+                    $("#collapseTwo").collapse('hide'); //hide
+                    console.log("dbclicked!");
+                    child{{item.ma_cay}}.addTo(map).bindPopup('<p style="font-size:14px; font-weight:bold;border-bottom: 1px solid black">{{item.ma_cay}} - {{item.ten_cay}}</p>'
+                                                +'<p>Mã cây : <b>{{item.ma_cay}}</b> </p>'                                   
+                                                +'<p>Loại cây: <b> {{item.loaicay_id}}</b></p>'
+                                                +'<p> Chiều cao: <b> {{item.chieucao}} cm </b></p>'
+                                                +'<p>Ngày trồng : <b>{{item.ngaytrong|date:"d/m/Y"}}</b></p>'
+                                                +'<p>Tình trạng: <b> {{item.tinhtrang_id}}</b></p>'
+                                                +'<p> Vị trí : <b>{{item.vitri}}</b></p>'
+                                                +'<p>Đặc điểm : <b>{{item.dacdiem}}</b></p>'
+                                                +'<p>Tên đường : <b>{{item.duong_id}}</b></p>'
+                                               );
+                    child{{item.ma_cay}}.openPopup();
+                    };
+                {% endfor %}
+            // end
+            
+            // click removelayer tree 
+                
+            document.getElementById('hidee').onclick = function() {
+                    console.log("clicked!");
+                    {% for item in listtrees %}
+                    map.removeLayer(child{{item.ma_cay}});
+                    {% endfor %}
+                    };
+                
+            //
+                // check checkbox cây xanh
+                $("#subunits1").click(function() {
+                    if (this.checked) {
+                    console.log("checked!");
+                    child1.addTo(map);
+                    } else {
+                    console.log("unchecked!");
+                    map.removeLayer(child1); }; });
+                //end check cây xanh
+                // check checkbox đường giao thông
+                $("#subunits2").click(function() {
+                    if (this.checked) {
+                    console.log("checked!");
+                    child2.addTo(map);
+                    } else {
+                    console.log("unchecked!");
+                    map.removeLayer(child2); }; });
+                //end check đường giao thông
+                // check checkbox ranh giới
+                $("#subunits3").click(function() {
+                    if (this.checked) {
+                    console.log("checked!"); 
+                    child3.addTo(map);
+                    } else {
+                    console.log("unchecked!");
+                    map.removeLayer(child3); }; });
+                //end check ranh giới
+                // tìm kiếm
+                var markersLayer = new L.LayerGroup();	//layer contain searched elements
+                    map.addLayer(markersLayer);
+                                // initial:	chỉ tìm kiếm các phần tử bằng văn bản ban đầu.
+                                // collapsed = TRUE thu gọn, hideMarkerOnCollapse: true: sau khi hoàn tất tìm kiếm và thanh tìm kiếm thu gọn, hãy làm cho vòng tròn đánh dấu kết quả tìm kiếm biến mất 
+                                //Tìm theo mã cây
+                    var controlSearch = new L.Control.Search({layer: child1,hideMarkerOnCollapse: true, initial: false,textPlaceholder: 'Tìm kiếm mã số cây',position:'topleft',propertyName: 'pk',textErr:'Không tìm thấy vị trí.',zoom:20,textCancel:"Xóa tìm kiếm"});
+                    map.addControl( controlSearch );
+                    // Tìm theo tên cây
+                    var controlSearch1 = new L.Control.Search({layer: child1,hideMarkerOnCollapse: true, initial: false,textPlaceholder: 'Tìm kiếm loại cây',position:'topleft',propertyName: 'loaicay_id',textErr:'Không tìm thấy vị trí.',zoom:20,textCancel:"Xóa tìm kiếm"});   
+                        
+                    map.addControl( controlSearch1 );
+            
+                    ////////////Hiển thị checked dữ liệu            
+                        markersLayer.addLayer(child1);
+                        markersLayer.addLayer(child2);
+                        markersLayer.addLayer(child3).bindLabel('Look revealing label!');
+                    // end tìm kiếm
+
+
+                // các lớp biểu đồ nền
+                var baselayers = {
+                    'OpenStreetMap': L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',                    
+                        maxZoom: 19,
+                        minZoom: 5,
+                    }),
+                    'Vệ tinh' : L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+                        maxZoom: 19,
+                        subdomains:['mt0','mt1','mt2','mt3'],
+                        minZoom: 5,
+                        })
+                };
+                //end
+                var overlays = {
+            
+                    };
+                var layersControl = L.control.layers.minimap(baselayers, overlays, {
+                    collapsed: false
+                }).addTo(map);
+            
+                    baselayers.OpenStreetMap.addTo(map);
+                    info.addTo(map);
+            }
+            
+        </script>
+        <!-- end -->
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static 'assets/bootstrap/bootstrap.min.js' %}"></script>
+        <script src="{% static 'assets/js/pagination.js' %}"></script>
+        <!--  lọc tìm kiếm -->
+        <script>
+            $(document).ready(function(){
+              $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#table-id tr").filter(function() {
+                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+              });
+            });
+        </script>
+        <!-- end -->
+        <!-- Tổng số hàng -->
+        <script>
+            var x = document.getElementById("tblData").rows.length -1;
+            document.getElementById("demo").innerHTML = "Tổng số cây: " + x;
+        </script>
+        <!-- end -->
+    </body>
+</html>

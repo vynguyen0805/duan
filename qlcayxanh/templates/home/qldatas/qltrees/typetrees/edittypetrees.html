@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Quản lý cây xanh đô thị
+</title>
+    <link rel="icon" type="image/png" href="{% static 'home/img/favicon.png' %}"/>
+    <link rel="stylesheet"  href="{% static 'home/qldatas/trees/typetrees/css/bootstrap.css' %}"  />
+    <!-- Custom Styles-->
+
+    <link rel="stylesheet"  href="{% static 'home/qldatas/trees/typetrees/css/tree.css' %}"  />
+</head>
+<body>
+            <div id="page-wrapper">
+                <div class="header">
+                    <div class="row user-infos cyruxx">
+                        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1"></div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h1 class="panel-title">Chỉnh sửa loại cây</h1>
+                            </div>
+                            <div class="panel-body">
+    
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="post_name"><label class="col-sm-3 col-form-label" for="id_ma_loai_cay">Mã loại cây:</label> 
+                                    <input type="text" style="color:red;"name="ma_loai_cay" value="{{ loais.ma_loai_cay }}" readonly="true"   id="id_ma_loai_cay"></div>
+                                    <div class="post_name"><label  class="col-sm-3 col-form-label" for="id_ten_loai_cay">Tên loại cây:</label>
+                                    <div class="col-sm-7 input-group" >
+                                        <input type="text" name="ten_loai_cay" maxlength="100"value="{{ loais.ten_loai_cay  }}"required oninvalid="this.setCustomValidity('Vui lòng nhập tên loại cây.')" oninput="setCustomValidity('')" id="id_ten_loai_cay">
+                                   </div>
+                                </div>
+                                    <div class="post_center">
+                                        <button class="submit-btn" type="submit">Cập nhật</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{% url 'qlcayxanh:typetrees' %}">Quay về danh sách</a>
+                </div>
+            </div>
+      
+        </div>
+        </div>
+        </div>
+        <!-- #main -->
+       {% include 'include/filescript.html' %}
+    <script src="{% static 'home/qlusers/js/validuser.js' %}"></script>
+    </body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+    {% load leaflet_tags %}
+    <head>
+        <!-- map -->
+        <script src="{% static 'leaflet/leaflet.js' %}"></script>
+        <script src="{% static 'leaflet/draw/leaflet.draw.js' %}"></script>
+        <script src="{% static 'leaflet/leaflet.extras.js'  %}"></script>
+        <script src="{% static 'leaflet/leaflet.forms.js'  %}"></script>
+        <script src="{% static 'leaflet/leaflet.extras.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}" />
+        <style>.leaflet-container-default {min-height: 300px;}</style>
+        <link rel="stylesheet" href="{% static 'leaflet/draw/leaflet.draw.css' %}" />
+        <!-- //////////map -->
+        {% include 'include/includecss.html' %}
+
+    <link rel="stylesheet"  href="{% static 'home/qldatas/boundarys/css/bootstrap.css' %}"  />
+    <!-- Custom Styles-->
+    <link rel="stylesheet"  href="{% static 'home/css/menu.css' %}"  />
+    <link rel="stylesheet"  href="{% static 'home/qldatas/boundarys/css/addboun.css' %}"  />
+    <link type="text/css" rel="stylesheet" href="{% static 'home/qldatas/boundarys/css/web.assets_common.0.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'home/qldatas/boundarys/css/web.assets_backend.0.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'home/qldatas/boundarys/css/web.assets_backend.1.css' %}"/>
+</head>
+
+<body>
+   <div id="wrapper">
+            {% include 'include/base.html' %}
+            <div id="page-wrapper">
+                <div class="header">
+                    <div class="row user-infos cyruxx">
+                        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1"></div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h1 class="panel-title">Chỉnh sửa ranh giới</h1>
+                            </div>
+                            <div class="panel-body">
+                                <!-- DỰ ÁN MỚI -->
+                                <div class="o_content">
+                                    <div class="o_view_controller">
+                                        <div class="o_form_view o_form_editable">
+                                            <div class="o_form_sheet_bg">
+                                                <div class="clearfix o_form_sheet">
+                                                    <div class="o_group">
+                                                        <form class="form-inline my-2 my-lg-0"   method="POST">
+                                                            {% csrf_token %}
+                                                            <table class="o_group o_inner_group o_group_col_6">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        {{ form.ma_ranh_gioi.errors }}
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier"for="id_ma_ranh_gioi">Mã ranh giới:</label></td>
+                                                                        <td style="width: 100%;"><input style="color:red;" class=" o_field_char o_field_widget o_input o_required_modifier" type="text" name="ma_ranh_gioi" value="{{ boun.ma_ranh_gioi }}"readonly="true" id="id_ma_ranh_gioi" ></td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                         {{ form.ten_ranh_gioi.errors }}
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier"for="id_ten_ranh_gioi">Tên ranh giới:</label></td>
+                                                                        <td style="width: 100%;"><input class="o_field_char o_field_widget o_input o_required_modifier" type="text" name="ten_ranh_gioi" value="{{ boun.ten_ranh_gioi }}"maxlength="100" required id="id_ten_ranh_gioi"></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table><table class="o_group o_inner_group o_group_col_6"><tbody><tr>
+                                                                 {{ form.type_ranh_gioi.errors }}
+                                                                <td class="o_td_label"><label class="o_form_label o_required_modifier"for="id_type_ranh_gioi">Loại ranh giới:</label></td>
+                                                                <td style="width: 100%;">
+                                                                    {{ form.type_ranh_gioi }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr> {{ form.ghichu.errors }}
+                                                                <td class="o_td_label"><label class="o_form_label o_required_modifier" for="id_ghichu">Ghi chú:</label></td>
+                                                                <td style="width: 100%;"><input class="o_field_char o_field_widget o_input o_required_modifier" type="text" name="ghichu"maxlength="150" id="id_ghichu" value='{{ boun.ghichu}}'></td>
+                                                            </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <div  class="post_name">
+                                                                <div>
+                                                                    <label class="required" for="id_geom">Geom:</label>
+                                                                    <style>
+                                                                        #id_geom-map { width: 100%; height: 400px;z-index: 100; }
+                                                                        #id_geom { display: none; }
+                                                                        /* Fixes for Django base.css */
+                                                                        .leaflet-draw ul {
+                                                                        margin-left: 0px;
+                                                                        padding-left: 0px;
+                                                                        }
+                                                                        .leaflet-draw ul.leaflet-draw-actions li {
+                                                                        list-style-type: none;
+                                                                        }
+                                                                    </style>
+                                                                    <script>
+                                                                        var geodjango_id_geom = {};
+                                                                        geodjango_id_geom.fieldid = 'id_geom';
+                                                                        geodjango_id_geom.modifiable = true;
+                                                                        geodjango_id_geom.geom_type = 'MultiPolygon';
+                                                                        geodjango_id_geom.srid = 4326;
+                                                                        
+                                                                        // Hiển thị các nút trên bản đồ
+                                                                        // Hiển thị các nút trên bản đồ
+                                                                        L.drawLocal.draw.toolbar.actions.title = "Hủy bản vẽ";
+                                                                        L.drawLocal.draw.toolbar.actions.text = "Hủy bỏ";
+                                                                        L.drawLocal.draw.toolbar.undo.title = "Xóa điểm cuối cùng đã vẽ";
+                                                                        L.drawLocal.draw.toolbar.undo.text = "Xóa điểm cuối cùng";
+                                                                        L.drawLocal.draw.toolbar.buttons.polyline = "Vẽ một đường đa giác";
+                                                                        L.drawLocal.draw.toolbar.buttons.polygon = "Vẽ một đa giác";
+                                                                        L.drawLocal.draw.toolbar.buttons.rectangle = "Vẽ một hình chữ nhật";
+                                                                        L.drawLocal.draw.toolbar.buttons.circle = "Vẽ một vòng tròn";
+                                                                        L.drawLocal.draw.toolbar.buttons.marker = "Vẽ một điểm đánh dấu";
+                                                                        L.drawLocal.draw.handlers.circle.tooltip.start = "Nhấp và kéo để vẽ vòng tròn.";
+                                                                        L.drawLocal.draw.handlers.marker.tooltip.start = "Nhấp vào bản đồ để đặt điểm đánh dấu.";
+                                                                        L.drawLocal.draw.handlers.polygon.tooltip.start = "Nhấp để bắt đầu vẽ hình.";
+                                                                        L.drawLocal.draw.handlers.polygon.tooltip.cont = "Nhấp để tiếp tục vẽ hình.";
+                                                                        L.drawLocal.draw.handlers.polygon.tooltip.end = "Nhấp vào điểm đầu tiên để đóng hình dạng này.";
+                                                                        L.drawLocal.draw.handlers.polyline.error = "<strong>Lỗi:</strong> các cạnh hình không thể cắt nhau!";
+                                                                        L.drawLocal.draw.handlers.polyline.tooltip.start = "Nhấp để bắt đầu vẽ đường.";
+                                                                        L.drawLocal.draw.handlers.polyline.tooltip.cont = "Nhấp để tiếp tục vẽ đường.";
+                                                                        L.drawLocal.draw.handlers.polyline.tooltip.end = "Nhấp vào điểm cuối cùng để hoàn thành dòng.";
+                                                                        L.drawLocal.draw.handlers.rectangle.tooltip.start = "Nhấp và kéo để vẽ hình chữ nhật.";
+                                                                        L.drawLocal.draw.handlers.simpleshape.tooltip.end = "Nhả chuột để hoàn thành bản vẽ.";
+
+                                                                        L.drawLocal.edit.toolbar.actions.save.title = "Lưu thay đổi.";
+                                                                        L.drawLocal.edit.toolbar.actions.save.text = "Lưu lại";
+                                                                        L.drawLocal.edit.toolbar.actions.cancel.title = "Hủy chỉnh sửa, loại bỏ tất cả các thay đổi.";
+                                                                        L.drawLocal.edit.toolbar.actions.cancel.text = "Hủy bỏ";
+                                                                        L.drawLocal.edit.toolbar.buttons.edit = "Chỉnh sửa";
+                                                                        L.drawLocal.edit.toolbar.buttons.editDisabled = "Không có vùng nào để chỉnh sửa.";
+                                                                        L.drawLocal.edit.toolbar.buttons.remove = "Xóa";
+                                                                        L.drawLocal.edit.toolbar.buttons.removeDisabled = "Không có vùng nào để xóa.";
+                                                                        L.drawLocal.edit.handlers.edit.tooltip.text = "Drag handles, or marker to edit feature.";//Kéo tay cầm hoặc điểm đánh dấu để chỉnh sửa đối tượng địa lý.
+                                                                        L.drawLocal.edit.handlers.edit.tooltip.subtext = "Nhấp vào hủy để hoàn tác các thay đổi.";
+                                                                        L.drawLocal.edit.handlers.remove.tooltip.text = "Nhấp vào một tính năng để loại bỏ";
+
+                                                                        L.Control.ResetView.TITLE = "Đặt lại chế độ xem";//Reset View
+                                                                        L.Control.ResetView.ICON = "url(/static/leaflet/images/reset-view.png)";
+                                                                        
+                                                                         // ///////////////end////////////////////
+                                                                        
+                                                                        function id_geom_map_callback(map, options) {
+                                                                            geodjango_id_geom.store_class = L.FieldStore;
+                                                                            geodjango_id_geom.precision = options.djoptions.precision;
+                                                                            (new L.GeometryField(geodjango_id_geom)).addTo(map);
+                                                                            
+                                                                        };
+                                                                        
+                                                                        
+                                                                    </script>
+                                                                    <div id="id_geom-div-map">
+                                                                        <div id="id_geom-map" class="leaflet-container-default"></div>
+                                                                        <script>
+                                                                            (function () {
+                                                                            
+                                                                                function loadmap() {
+                                                                                    var djoptions = {"srid": null, "extent": [[-90, -180], [90, 180]], "fitextent": true, "center": [15.5629911, 108.4835256], "zoom": 13, "precision": 6, "minzoom": 3, "maxzoom": 18, "layers": [["OSM", "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", "\u00a9 <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors"]], "overlays": [], "attributionprefix": "Insprired by life in GIS", "scale": "both", "minimap": false, "resetview": true, "tilesextent": []},
+                                                                                        options = {djoptions: djoptions, initfunc: loadmap,
+                                                                                                   globals: false, callback: id_geom_map_callback},
+                                                                                        map = L.Map.djangoMap('id_geom-map', options);
+                                                                                    
+                                                                                }
+                                                                                var loadevents = ["load"];
+                                                                                if (loadevents.length === 0) loadmap();
+                                                                                else if (window.addEventListener) for (var i=0; i<loadevents.length; i++) window.addEventListener(loadevents[i], loadmap, false);
+                                                                                else if (window.jQuery) jQuery(window).on(loadevents.join(' '), loadmap);
+                                                                                
+                                                                            })();
+                                                                        </script>
+                                                                    </div>
+                                                                    <textarea id="id_geom" class="required django-leaflet-raw-textarea" cols="150" rows="10" name="geom">{{boun.geom.json}}</textarea>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="post_center" >
+                                                                <button class="submit-btn" type="submit" >Cập nhật</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <a class="quayve" href="{% url 'qlcayxanh:boundarys' %}">Quay về danh sách</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                    -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+   {% include 'include/filescript.html' %}
+   <script src="{% static 'home/boundarys/js/validuser.js' %}"></script>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,35 @@
+L.drawLocal.draw.toolbar.actions.title = "Cancel drawing";
+L.drawLocal.draw.toolbar.actions.text = "Cancel";
+L.drawLocal.draw.toolbar.undo.title = "Delete last point drawn";
+L.drawLocal.draw.toolbar.undo.text = "Delete last point";
+L.drawLocal.draw.toolbar.buttons.polyline = "Draw a polyline";
+L.drawLocal.draw.toolbar.buttons.polygon = "Draw a polygon";
+L.drawLocal.draw.toolbar.buttons.rectangle = "Draw a rectangle";
+L.drawLocal.draw.toolbar.buttons.circle = "Draw a circle";
+L.drawLocal.draw.toolbar.buttons.marker = "Draw a marker";
+L.drawLocal.draw.handlers.circle.tooltip.start = "Click and drag to draw circle.";
+L.drawLocal.draw.handlers.marker.tooltip.start = "Click map to place marker.";
+L.drawLocal.draw.handlers.polygon.tooltip.start = "Click to start drawing shape.";
+L.drawLocal.draw.handlers.polygon.tooltip.cont = "Click to continue drawing shape.";
+L.drawLocal.draw.handlers.polygon.tooltip.end = "Click first point to close this shape.";
+L.drawLocal.draw.handlers.polyline.error = "<strong>Error:</strong> shape edges cannot cross!";
+L.drawLocal.draw.handlers.polyline.tooltip.start = "Click to start drawing line.";
+L.drawLocal.draw.handlers.polyline.tooltip.cont = "Click to continue drawing line.";
+L.drawLocal.draw.handlers.polyline.tooltip.end = "Click last point to finish line.";
+L.drawLocal.draw.handlers.rectangle.tooltip.start = "Click and drag to draw rectangle.";
+L.drawLocal.draw.handlers.simpleshape.tooltip.end = "Release mouse to finish drawing.";
+
+L.drawLocal.edit.toolbar.actions.save.title = "Save changes.";
+L.drawLocal.edit.toolbar.actions.save.text = "Lưu lại";
+L.drawLocal.edit.toolbar.actions.cancel.title = "Cancel editing, discards all changes.";
+L.drawLocal.edit.toolbar.actions.cancel.text = "Cancel";
+L.drawLocal.edit.toolbar.buttons.edit = "Edit layers";
+L.drawLocal.edit.toolbar.buttons.editDisabled = "No layers to edit.";
+L.drawLocal.edit.toolbar.buttons.remove = "Delete layers";
+L.drawLocal.edit.toolbar.buttons.removeDisabled = "No layers to delete.";
+L.drawLocal.edit.handlers.edit.tooltip.text = "Drag handles, or marker to edit feature.";
+L.drawLocal.edit.handlers.edit.tooltip.subtext = "Click cancel to undo changes.";
+L.drawLocal.edit.handlers.remove.tooltip.text = "Nhấp vào một tính năng để loại bỏ.";
+
+L.Control.ResetView.TITLE = "Reset view";
+L.Control.ResetView.ICON = "url(/static/leaflet/images/reset-view.png)";

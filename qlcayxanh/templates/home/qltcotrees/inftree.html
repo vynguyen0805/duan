@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+    {% load leaflet_tags %}
+    <head>
+         <!-- map -->
+         <script src="{% static 'leaflet/leaflet.js' %}"></script>
+         <script src="{% static 'leaflet/draw/leaflet.draw.js' %}"></script>
+         <script src="{% static 'leaflet/leaflet.extras.js'  %}"></script>
+         <script src="{% static 'leaflet/leaflet.forms.js'  %}"></script>
+         <script src="{% static 'leaflet/leaflet.extras.js' %}"></script>
+         <link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}" />
+         <style>.leaflet-container-default {min-height: 300px;}</style>
+ 
+             
+         <link rel="stylesheet" href="{% static 'leaflet/draw/leaflet.draw.css' %}" />
+     
+ <!-- //////////map -->
+        {% include 'include/includecss.html' %}
+
+    <link rel="stylesheet"  href="{% static 'home/tcotrees/css/bootstrap.css' %}"  />
+    <!-- Custom Styles-->
+    <link rel="stylesheet"  href="{% static 'home/css/menu.css' %}"  />
+    <link rel="stylesheet"  href="{% static 'home/tcotrees/css/addboun.css' %}"  />
+    <link type="text/css" rel="stylesheet" href="{% static 'home/tcotrees/css/web.assets_common.0.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'home/tcotrees/css/web.assets_backend.0.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'home/tcotrees/css/web.assets_backend.1.css' %}"/>
+<style>
+    .leaflet-draw{
+        display: none;
+    }
+</style>
+</head>
+
+<body>
+   <div id="wrapper">
+            {% include 'include/base.html' %}
+            <div id="page-wrapper">
+                <div class="header">
+                    <div class="row user-infos cyruxx">
+                        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1"></div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h1 class="panel-title">Thông tin cây xanh {{ tree.ma_cay}}</h1>
+                            </div>
+                            <div class="panel-body">
+                                <!-- DỰ ÁN MỚI -->
+                                <div class="o_content">
+                                    <div class="o_view_controller">
+                                        <div class="o_form_view o_form_editable">
+                                            <div class="o_form_sheet_bg">
+                                                <div class="clearfix o_form_sheet">
+                                                    <div class="o_group">
+
+                                                            <table class="o_group o_inner_group o_group_col_6">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label  for="id_ma_cay">Mã cây:</label></td>
+                                                                        <td style="width: 100%;"><input style="color:red;"  type="text" name="ma_cay" value="{{ tree.ma_cay }}"readonly="true" id="id_ma_cay" ></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label  for="id_ten_cay">Tên cây:</label></td>
+                                                                        <td style="width: 100%;"><input  readonly="true" type="text" name="ten_cay" value="{{ tree.ten_cay }}"maxlength="100" required id="id_ten_cay"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label  for="id_loaicay_id">Loại cây:</label></td>
+                                                                        <td style="width: 100%;">
+                                                                             <input  readonly="true" type="text" name="loaicay_id" value="{{tree.loaicay_id}}"maxlength="100" required id="id_loaicay_id">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label  for="id_chieucao">Chiều cao(cm):</label></td>
+                                                                        <td style="width: 100%;"><input  type="number" value="{{ tree.chieucao }}" readonly="true"name="chieucao" id="id_chieucao" ></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label  for="id_vitri">Vị trí:</label></td>
+                                                                        <td style="width: 100%;">{{ tree.vitri }}
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table><table class="o_group o_inner_group o_group_col_6"><tbody><tr>
+                                                                        <td class="o_td_label"><label  for="id_ngaytrong">Ngày trồng:</label></td>
+                                                                        <td style="width: 100%;"><input  class="o_field_char o_field_widget o_input o_required_modifier" type="date" name="ngaytrong" id="id_ngaytrong" readonly="true" value='{{ tree.ngaytrong|date:"Y-m-d" }}'></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label  for="id_tinhtrang_id">Tình trạng:</label></td>
+                                                                        <td style="width: 100%;">
+                                                                            <input  readonly="true" type="text" name="tinhtrang" value="   {{ tree.tinhtrang_id}}"maxlength="100" required id="id_tinhtrang_id">
+
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label  for="id_dacdiem">Đặc điểm:</label></td>
+                                                                        <td style="width: 100%;"><input  value="{{ tree.dacdiem }}" type="text" name="dacdiem"readonly="true" id="id_dacdiem" >
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label  for="id_duong_id">Tên đường:</label></td>
+                                                                        <td style="width: 100%;">
+                                                                           {{ tree.duong_id }}
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <div  class="post_name">
+                                                                <div>
+                                                                    <label class="required" for="id_geom">Geom:</label>
+                                                                    <style>
+                                                                        #id_geom-map { width: 100%; height: 400px;z-index: 100; }
+                                                                        #id_geom { display: none; }
+                                                                        /* Fixes for Django base.css */
+                                                                        .leaflet-draw ul {
+                                                                        margin-left: 0px;
+                                                                        padding-left: 0px;
+                                                                        }
+                                                                        .leaflet-draw ul.leaflet-draw-actions li {
+                                                                        list-style-type: none;
+                                                                        }
+                                                                    </style>
+                                                                    <script>
+                                                                        var geodjango_id_geom = {};
+                                                                        geodjango_id_geom.fieldid = 'id_geom';
+                                                                        geodjango_id_geom.modifiable = true;
+                                                                        geodjango_id_geom.geom_type = 'Point';//kiểu dữ liệu của bản đồ
+                                                                        geodjango_id_geom.srid = 4326;
+                                                                            function id_geom_map_callback(map, options) {
+                                                                            geodjango_id_geom.store_class = L.FieldStore;
+                                                                            geodjango_id_geom.precision = options.djoptions.precision;
+                                                                            (new L.GeometryField(geodjango_id_geom)).addTo(map);
+                                                                            
+                                                                        };
+                                                                        
+                                                                        
+                                                                    </script>
+                                                                    <div id="id_geom-div-map">
+                                                                        <div id="id_geom-map" class="leaflet-container-default"></div>
+                                                                        <script>
+                                                                            (function () {
+                                                                            function loadmap() {
+<!--                                                                                    Thay đổi nền - lớp cơ sở cho bản đồ-->
+                                                                                    var baselayers = {
+                                                                                    'sat_text' :  L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
+                                                                                    maxZoom: 20,
+                                                                                    subdomains:['mt0','mt1','mt2','mt3'],
+                                                                                    minZoom: 5,
+                                                                                        })
+                                                                                };
+                                                                                        var djoptions = {"srid": null, "extent": [[-90, -180], [90, 180]], "fitextent": true, "center": [15.5629911, 108.4835256], "zoom": 13, "precision": 6, "minzoom": 5, "maxzoom":20, "layers": baselayers, "overlays": [],  "scale": "both", "minimap": false, "resetview": true, "tilesextent": []},
+                                                                                            options = {djoptions: djoptions, initfunc: loadmap,
+                                                                                                       globals: false, callback: id_geom_map_callback},
+                                                                                            map = L.Map.djangoMap('id_geom-map', options);
+                                                                                        //    Hiển thị Quần đảo Hoàng Sa và Trường Sa
+                                                                                                var gIcon = L.icon({
+                                                                                                    iconUrl: "/static/assets/images/vn.jpg",
+                                                                                                    iconSize:     [40,20 ], // size of the ico
+                                                                                                        });
+                                                                                        L.marker([16.482839176122983,111.719970703125], {icon: gIcon}).addTo(map).bindPopup("Quần Đảo Hoàng Sa");
+                                                                                        L.marker([10.719262873874907,115.83239144722667], {icon: gIcon}).addTo(map).bindPopup("Quần Đảo Trường Sa");
+                                                                                        baselayers.sat_text.addTo(map);
+                                                                                    
+                                                                                }
+                                                                                var loadevents = ["load"];
+                                                                                if (loadevents.length === 0) loadmap();
+                                                                                else if (window.addEventListener) for (var i=0; i<loadevents.length; i++) window.addEventListener(loadevents[i], loadmap, false);
+                                                                                else if (window.jQuery) jQuery(window).on(loadevents.join(' '), loadmap);
+                                                                                
+                                                                            })();
+                                                                        </script>
+                                                                    </div>
+                                                                    <textarea id="id_geom" class="required django-leaflet-raw-textarea" cols="150" rows="10" name="geom">{{tree.geom.json}}</textarea>
+                                                                </div>
+                                                            </div>
+
+                                                    </div>
+                                                </div>
+                                                <a class="quayve" href="{% url 'qlcayxanh:lists_tcotrees' %}">Quay về danh sách</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                    -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+   {% include 'include/filescript.html' %}
+    <script src="{% static 'home/tcotrees/js/validuser.js' %}"></script>
+</body>
+
+</html>
+
+
+
+

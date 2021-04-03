@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+{% load static %}
+<head>
+     {% include 'include/includecss.html' %}
+        <link rel="stylesheet"  href="{% static 'home/js/morris/morris-0.4.3.min.css' %}"  />
+    <!-- Custom Styles-->
+    <link rel="stylesheet"  href="{% static 'home/css/custom-styles.css' %}"  />
+    <!-- Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+</head>
+<style>
+
+</style>
+<body>
+    <div id="wrapper">
+
+        {% include 'include/base.html' %}
+        <div id="page-wrapper">
+            <div id="page-inner">   
+<!--/.row-->
+                <div class="row">
+                    <div class="col-md-9 col-sm-12 col-xs-12">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                THÔNG TIN
+                                </div>
+                                
+                                <div class="panel-body">
+                                    <div class="col-md-9 col-sm-12 col-xs-12">
+                                    <img class='imgtree_a' src="{% static 'home/img/hoatdong/trees.jpg' %}"/>
+                                    <div class="panel-body">
+                                        <h4 style="text-align:center;">WEBGIS-QUẢN LÝ CÂY XANH ĐÔ THỊ</h4>
+                                        <h5>&emsp;Công nghệ GIS trên nền Web (hay còn gọi là WebGIS) là hệ thống thông tin địa lý phân tán trên một mạng các máy tính để tích hợp, trao đổi các thông tin địa lý trên mạng Internet. WebGIS có tiềm năng lớn trong công việc làm cho thông tin địa lý trở nên hữu dụng và sẵn sàng tới số lượng lớn người sử dụng trên thế giới. Với việc sử dụng bản đồ trực tuyến, giải pháp này sẽ giúp khách hàng có thể cập nhật dữ liệu lên bản đồ để phục vụ cho mục đích quản lý. </h5>
+                                       
+                                    </div>
+                                </div>
+                                    <div class="col-md-3 col-sm-12 col-xs-12">
+                                    <img class='imgtree_a' src="{% static 'home/img/hoatdong/tree2.jpg' %}"/>
+                                    <img class='imgtree_a' src="{% static 'home/img/hoatdong/tree3.jpg' %}"/>
+                                    <img class='imgtree_a' src="{% static 'home/img/hoatdong/tree4.jpg' %}"/>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    HÌNH ẢNH HOẠT ĐỘNG
+                                </div>
+                                <div class="panel-body">
+                                <a>
+                                    <img class='img_ai' src="{% static 'home/img/tin_hd/hd1.jpg' %}"title="Hoạt động 1" alt="Hoạt động 1" style="width:150px">
+                                  </a>
+                                  
+                                  <a>
+                                    <img class='img_ai' src="{% static 'home/img/tin_hd/hd2.jpg' %}"title="Hoạt động 2" alt="Hoạt động 2" style="width:150px">
+                                  </a>
+                                  <a>
+                                    <img class='img_ai' src="{% static 'home/img/tin_hd/hd3.jpg' %}" title="Hoạt động 3"alt="Hoạt động 3" style="width:150px">
+                                  </a>
+                                  <a>
+                                    <img class='img_ai' src="{% static 'home/img/tin_hd/hd4.jpg' %}"title="Hoạt động 4" alt="Hoạt động 4" style="width:150px">
+                                  </a>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+               
+                   
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                               XEM BẢN ĐỒ
+                            </div>
+                            <div class="panel-body">
+                                <a href="{% url 'qlcayxanh:map' %}"><img class='img_a'style="border-radius: 0px;" src="{% static 'home/img/bando.png' %}"/></a>
+
+                            </div>
+                            
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                            LIÊN KẾT WEBSITE
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <a href=""><img class='img_a' src="{% static 'home/img/lienket/lk1.jpg' %}"/></a>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <a href=""><img class='img_a' src="{% static 'home/img/lienket/lk2.png' %}"/></a>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <a href=""><img class='img_a' src="{% static 'home/img/lienket/lk4.png' %}"/></a>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <a href=""><img class='img_a' src="{% static 'home/img/lienket/lk5.png' %}"/></a>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <a href=""><img class='img_a' src="{% static 'home/img/lienket/lk6.png' %}"/></a>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <img class='img_a' src="{% static 'home/img/lienket/lk7.png' %}"/></a>
+                                    </div>
+                                </div>
+                               
+                                
+                                </div>
+                            
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                               CƠ SỞ DỮ LIỆU
+                            </div>
+                            <div class="panel-body">
+                                <li> <a href="{% url 'qlcayxanh:boundarys' %}">Ranh giới</a></li>
+                                <li><a href="{% url 'qlcayxanh:liststreets' %}">Đường giao thông</a></li>
+                                <li><a href="{% url 'qlcayxanh:listtrees' %}">Cây xanh</a></li>
+                                <li><a href="{% url 'qlcayxanh:statis' %}">Thống kê</a></li>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    TIN HOẠT ĐỘNG
+                                </div>
+                                <div class="panel-body">
+                                        <li type="circle">Dự án "Kiểm kê đất đai và lập bản đồ hiện trạng sử dụng đất".</li>
+                                        <li type="circle">Giám sát tài nguyên môi trường biển, hải đảo bằng công nghệ viễn thám.</li>
+                                        <li type="circle">Vệ tinh VNREDSat-1: Vệ tinh viễn thám đầu tiên của Việt Nam.</li>
+                                        <li type="circle">Hệ thống giám sát tài nguyên thiên nhiên và môi trường tại Việt Nam.</li>
+                                        <li type="circle">Công nghệ viễn thám hỗ trợ quản lý, giám sát tài nguyên và bảo vệ môi tường ở Việt Nam.</li>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+                {% include 'footer.html' %}
+            </div>
+
+    </div>
+    </div>
+<!--    menu-->
+    {% include 'include/filescript.html' %}
+</body>
+
+</html>

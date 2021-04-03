@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    <head>
+   {% include 'include/includecss.html' %}
+    <link rel="stylesheet"  href="{% static 'home/qlusers/css/bootstrap.css' %}"  />
+    <link rel="stylesheet"  href="{% static 'home/css/menu.css' %}"  />
+    <!-- Custom Styles-->
+    <link rel="stylesheet"  href="{% static 'home/qlusers/css/adduser.css' %}"  />
+        <!-- Custom Styles-->
+    <link rel="stylesheet"  href="{% static 'home/qlusers/changepass/css/style.css' %}"  />
+
+<style>
+ .page-header {
+            text-align: center;
+            text-transform: uppercase;
+            color:  #8BC34A;
+            }
+</style>
+    </head>
+    <body>
+        <div id="wrapper">
+        {% include 'include/base.html' %}
+        <div id="page-wrapper" style="min-height: 570px;">
+         
+            <div id="page-inner" >
+                <h2 class="page-header">ĐỔI MẬT KHẨU</h2>
+                <div class="row">
+                    <div class="center ">
+                        <section class="get-in-touch">
+                            {% for message in messages %}
+                            <p id="messages" style="color:red;">{{message}}</p>
+                            {% endfor %}
+                            <form method="post"class="contact-form row" style="border: 1px solid #8BC34A;">
+                                {% csrf_token %}
+                                <div class="col-lg-12 ">
+                                    {{ form.as_p }}
+                                </div>
+                                <div class="col-lg-12">
+                                    <input class="submit-btn" type="submit" value="Cập nhật">
+                                    <a class="cancel-btn " href="{% url 'index' %}" >Hủy</a>
+                                </div>
+                            </form>
+
+                        </section>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        </div>
+          {% include 'include/filescript.html' %}
+
+        <script src="{% static 'home/qlusers/js/validuser.js' %}"></script>
+    </body>
+</html>

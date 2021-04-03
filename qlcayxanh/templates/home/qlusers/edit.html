@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    <head>
+        {% include 'include/includecss.html' %}
+    <link rel="stylesheet"  href="{% static 'home/qlusers/css/bootstrap.css' %}"  />
+    <link rel="stylesheet"  href="{% static 'home/css/menu.css' %}"  />
+    <!-- Custom Styles-->
+     <link rel="stylesheet"  href="{% static 'home/qlusers/css/user.css' %}"  />
+    </head>
+    <body>
+        <div id="wrapper">
+            {% include 'include/base.html' %}
+            <div id="page-wrapper">
+                <div class="header">
+                    <div class="row user-infos cyruxx">
+                        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1"></div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h1 class="panel-title">Chỉnh sửa tài khoản</h1>
+                            </div>
+                            <div class="panel-body">
+    
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="post_name"><label class="col-sm-3 col-form-label" for="id_email">Địa chỉ Email:</label> 
+                                    <input type="email" name="email" value="{{ user.email }}" required maxlength="254" id="id_email"></div>
+                                    <div class="post_name"><label  class="col-sm-3 col-form-label" for="id_first_name">Họ và tên:</label>
+                                        <div class="col-sm-7 input-group" >
+                                    <input type="text" name="last_name" value="{{ user.last_name  }} " required maxlength="30" id="id_last_name">
+                                  <input type="text" name="first_name" value="{{ user.first_name }}"required maxlength="30" id="id_first_name">
+                                </div>
+                                </div>
+                                    <div class="check_a" >
+                                        <label class="col-sm-3 col-form-label" for="id_is_staff">Tình trạng: </label>{{ form.is_staff }}
+                                       
+                                        </div>
+                                        <div class="check_a">
+                                        <label class="col-sm-3 col-form-label" for="id_is_active">Kích hoạt:</label> {{ form.is_active }}
+                                     
+                                        </div>
+                                        <div class="check_a">
+                                        <label class="col-sm-3 col-form-label" for="id_is_superuser">Trạng thái superuser:</label> {{ form.is_superuser }}
+                                       
+                                    </div>
+                                    <div class="post_center">
+                                        <button class="submit-btn" type="submit">Cập nhật</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{% url 'qlcayxanh:users' %}">Quay về danh sách</a>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        <!-- #main -->
+       {% include 'include/filescript.html' %}
+    <script src="{% static 'home/qlusers/js/validuser.js' %}"></script>
+    </body>
+</html>

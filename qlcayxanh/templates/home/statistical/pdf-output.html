@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF</title>
+    <link rel="icon" type="image/png" href="{% static 'home/img/favicon.png' %}"/>
+    <style>
+        @page{
+            size: "A4";
+            margin: 2.5cm 1.5cm 3.5cm 1.5cm;
+
+        
+        @top-center{
+           content: "WEBGIS- QUẢN LÝ CÂY XANH ĐÔ THỊ";
+        }
+        @bottom-right{
+        content:"Page" counter(page)" of "counter(pages);
+        }
+        }
+        .cen{
+         margin-left:10%;
+        }
+        .th, td{
+        padding:5px;
+        }
+    </style>
+</head>
+<body>
+
+   <h2 style="text-align:center;"> THỐNG KÊ CÂY XANH</h2>
+<div class="cen">
+         <table class="table" >
+            <thead class="thead">
+                <tr>
+                    <th style="width:100px;text-align:center;">STT</th>
+                    <th style="width:120px;">Tên cây</th>
+                    <th style="width:150px;">Loại cây</th>
+                    <th style="width:120px;text-align:center;">Số lượng</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in list %}
+                    <tr >
+            <!-- Django có cú pháp riêng về việc lấy chỉ mục của thực thể forloop.counte-->
+                        <td style="text-align:center;">{{ forloop.counter }}</td>
+                        <td>{{ data.ten_cay }}</td>
+                        <td>{{ data.loaicay_id__ten_loai_cay }}</td>
+                        <td style="text-align:center;">{{ data.count}}</td>
+                   </tr>
+
+                    {% endfor%}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <th>Tổng số cây:</th>
+                        <th style="text-align:center;">{{ total}}</th>
+                   </tr>
+            </tbody>
+
+    </table>
+    </div>
+</body>
+</html>

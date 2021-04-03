@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+     {% include 'include/includecss.html' %}
+    <link rel="stylesheet"  href="{% static 'home/qlusers/css/bootstrap.css' %}"  />
+    <link rel="stylesheet"  href="{% static 'home/css/menu.css' %}"  />
+    <!-- Custom Styles-->
+    <link rel="stylesheet"  href="{% static 'home/qlusers/css/user.css' %}"  />
+</head>
+<body>
+    <div id="wrapper">
+        {% include 'include/base.html' %}
+        <div id="page-wrapper">
+        <div class="header">
+            <div class="row user-infos cyruxx">
+                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1"></div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                                <h1 class="panel-title"> Thêm tài khoản</h1>
+                            </div>
+                        <div class="panel-body">
+                            {% if form.errors %}
+                            {% for field in form %}
+                            {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                            {% endfor %}
+                            {% endfor %}
+                            {% endif %}
+
+
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="post_name"><label class="col-sm-3 col-form-label" for="id_username">Tên đăng nhập(<span style="color:red;">*</span>):</label>
+                                    <input type="text" name="username" autofocus required id="id_username"style="background-color:#5897fb !important;color:#f8f9fc;">
+                                    <div id="uname_error_pass" class="text-danger" ></div>
+                                </div>
+                                <div class="post_name">
+                            <label class="col-sm-3 col-form-label" for="id_first_name">Họ và tên(<span style="color:red;">*</span>):</label>
+                                <div class="col-sm-7 input-group" >
+                                    <input type="text" name="last_name" maxlength="30" id="id_last_name" required data-validate="Họ và tên lót bắt buộc nhập">
+                                    <input type="text" name="first_name" maxlength="30" id="id_first_name"required data-validate="Tên bắt buộc nhập">
+                                        <br/>
+                            <div id="uname_error_msg" class="text-danger"></div>
+                                </div>
+                                </div>
+                                <div class="post_name">  <label class="col-sm-3 col-form-label" for="id_email">Email(<span style="color:red;">*</span>):</label>
+                                    <input type="email" name="email" id="id_email"required data-validate="Email bắt buộc nhập" aria-describedby="emailHelp">
+                                <div id="uname_error_email" class="error_email text-danger" ></div>
+                                </div>
+
+                                <div class="check_a" >
+                                <label class="col-sm-3 col-form-label" for="id_is_staff">Nhân viên:</label> <input type="checkbox" name="is_staff" id="id_is_staff">
+                            
+                            </div>
+                                <div class="check_a">
+                                <label class="col-sm-3 col-form-label" for="id_is_active">Kích hoạt:</label> <input type="checkbox" name="is_active" id="id_is_active">
+                                </div>
+                                <div class="check_a">
+                                <label class="col-sm-3 col-form-label" for="id_is_superuser">Trạng thái superuser:</label> <input type="checkbox" name="is_superuser" id="id_is_superuser">
+                                </div>
+                                <div class="post_name"><label class="col-sm-3 col-form-label" for="id_password1">Mật khẩu(<span style="color:red;">*</span>):</label>
+                                    <input type="password"required  name="password1"autocomplete="new-password" style="background-color:#f6c23e !important;" id="id_password1">
+                                </div>
+                                <div class="post_name"><label class="col-sm-3 col-form-label" for="id_password2">Xác nhận mật khẩu(<span style="color:red;">*</span>):</label>
+                                    <input type="password"required  name="password2" autocomplete="new-password" style="background-color:#f6c23e !important;"id="id_password2">
+                                </div>
+                                    <div class="post_center">
+
+                                <span class="badge badge-danger" style="font-size:12px;">Trường có dấu (*) bắt buột phải nhập.</span>
+                                    </div>
+                                    <div class="post_center">
+                                         <button class="submit-btn" type="submit" >Thêm</button>
+
+                                    </div>
+
+                            </form>
+                        </div>
+                    </div>
+                        </div>
+                        <a href="{% url 'qlcayxanh:users' %}">Quay về danh sách</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- #main -->
+       {% include 'include/filescript.html' %}
+    <script src="{% static 'home/qlusers/js/validuser.js' %}"></script>
+</body>
+</html>

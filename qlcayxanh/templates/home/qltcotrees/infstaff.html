@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+    {% load leaflet_tags %}
+    <head>
+        {% leaflet_js %}
+        {% leaflet_css %}
+        {% include 'include/includecss.html' %}
+
+    <link rel="stylesheet"  href="{% static 'home/tcotrees/css/bootstrap.css' %}"  />
+    <!-- Custom Styles-->
+    <link rel="stylesheet"  href="{% static 'home/css/menu.css' %}"  />
+    <link rel="stylesheet"  href="{% static 'home/tcotrees/css/addboun.css' %}"  />
+    <link type="text/css" rel="stylesheet" href="{% static 'home/tcotrees/css/web.assets_common.0.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'home/tcotrees/css/web.assets_backend.0.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'home/tcotrees/css/web.assets_backend.1.css' %}"/>
+<!-- show map -->
+    <script src="{% static 'home/tcotrees/css/jsi18n/' %}">  </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/ol3/4.6.5/ol.css" type="text/css" media="all" rel="stylesheet">
+    <link  href="{% static 'home/tcotrees/css/ol3.css' %}"  type="text/css" media="all" rel="stylesheet" />
+    <script src="{% static 'home/tcotrees/js/jquery.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/ol.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/jquery.init.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/OLMapWidget.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/core.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/RelatedObjectLookups.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/actions.js/' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/urlify.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/prepopulate.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/xregexp.js' %}">  </script>
+</head>
+
+<body>
+   <div id="wrapper">
+            {% include 'include/base.html' %}
+            <div id="page-wrapper">
+                <div class="header">
+                    <div class="row user-infos cyruxx">
+                        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1"></div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h1 class="panel-title">Thông tin nhân viên {{ staff.ma_nhan_vien}}</h1>
+                            </div>
+                            <div class="panel-body">
+                                <!-- DỰ ÁN MỚI -->
+                                <div class="o_content">
+                                    <div class="o_view_controller">
+                                        <div class="o_form_view o_form_editable">
+                                            <div class="o_form_sheet_bg">
+                                                <div class="clearfix o_form_sheet">
+                                                    <div class="o_group">
+
+                                                            <table class="o_group o_inner_group o_group_col_6">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label  for="id_ma_nhan_vien">Mã nhân viên:</label></td>
+                                                                        <td style="width: 100%;"><input style="color:red;"  type="text" name="ma_nhan_vien" value="{{ staff.ma_nhan_vien }}"readonly="true" id="id_ma_nhan_vien" ></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label  for="id_hoten">Tên nhân viên:</label></td>
+                                                                        <td style="width: 100%;"><input  readonly="true" type="text" name="hoten" value="{{ staff.hoten }}"maxlength="100" required id="id_hoten"></td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label  for="id_vitri">Điện thoại:</label></td>
+                                                                        <td style="width: 100%;">{{ staff.dienthoai }}
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table><table class="o_group o_inner_group o_group_col_6"><tbody><tr>
+                                                                        <td class="o_td_label"><label  for="id_gioitinh">Giới tính:</label></td>
+                                                                        <td style="width: 100%;"><input  type="text" value="{{ staff.gioitinh }}" readonly="true"name="gioitinh" id="id_gioitinh" ></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label >Địa chỉ:</label></td>
+                                                                        <td style="width: 100%;">
+                                                                            {{ staff.diachi}}
+                                                                        </td>
+                                                                    </tr>
+
+                                                                </tbody>
+                                                            </table>
+                                                    </div>
+                                                </div>
+                                                <a class="quayve" href="{% url 'qlcayxanh:lists_tcotrees' %}">Quay về danh sách</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                    -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+   {% include 'include/filescript.html' %}
+    <script src="{% static 'home/tcotrees/js/validuser.js' %}"></script>
+</body>
+
+</html>
+
+
+
+

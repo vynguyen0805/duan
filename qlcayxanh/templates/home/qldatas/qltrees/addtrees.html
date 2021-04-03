@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    {% load leaflet_tags %}
+    <head>
+        <!-- map -->
+       <script src="{% static 'leaflet/leaflet.js' %}"></script>
+       <script src="{% static 'leaflet/draw/leaflet.draw.js' %}"></script>
+       <script src="{% static 'leaflet/leaflet.extras.js'  %}"></script>
+       <script src="{% static 'leaflet/leaflet.forms.js'  %}"></script>
+       <script src="{% static 'leaflet/leaflet.extras.js' %}"></script>
+       <link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}" />
+       <style>.leaflet-container-default {min-height: 300px;}</style>
+       <link rel="stylesheet" href="{% static 'leaflet/draw/leaflet.draw.css' %}" />
+       <!-- //////////map -->
+        {% include 'include/includecss.html' %}
+        <link rel="stylesheet"  href="{% static 'home/qldatas/trees/css/bootstrap.css' %}"  />
+        <!-- Custom Styles-->
+        <link rel="stylesheet"  href="{% static 'home/css/menu.css' %}"  />
+        <link rel="stylesheet"  href="{% static 'home/qldatas/trees/css/addboun.css' %}"  />
+        <link type="text/css" rel="stylesheet" href="{% static 'home/qldatas/trees/css/web.assets_common.0.css' %}"/>
+        <link type="text/css" rel="stylesheet" href="{% static 'home/qldatas/trees/css/web.assets_backend.0.css' %}"/>
+        <link type="text/css" rel="stylesheet" href="{% static 'home/qldatas/trees/css/web.assets_backend.1.css' %}"/>
+       
+    </head>
+    <body>
+        <div id="wrapper">
+            {% include 'include/base.html' %}
+            <div id="page-wrapper">
+                <div class="header">
+                    <div class="row user-infos cyruxx">
+                        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1"></div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h1 class="panel-title">Thêm cây xanh</h1>
+                            </div>
+                            <div class="panel-body">
+                                {% if form.errors %}
+                                {% for field in form %}
+                                {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                                {% endfor %}
+                                {% endfor %}
+                                {% endif %}
+                                <!-- DỰ ÁN MỚI -->
+                                <div class="o_content">
+                                    <div class="o_view_controller">
+                                        <div class="o_form_view o_form_editable">
+                                            <div class="o_form_sheet_bg">
+                                                <div class="clearfix o_form_sheet">
+                                                    <div class="o_group">
+                                                        <form class="form-inline my-2 my-lg-0"   method="POST">
+                                                            {% csrf_token %}
+                                                            <table class="o_group o_inner_group o_group_col_6">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier"  for="id_ma_cay">Mã cây(<span style="color:red;">*</span>):</label></td>
+                                                                        <td style="width: 100%;"><input class="o_field_char o_field_widget o_input o_required_modifier" autofocus type="text" name="ma_cay" maxlength="100" required oninvalid="this.setCustomValidity('Vui lòng nhập mã cây.')" oninput="setCustomValidity('')" id="id_ma_cay" ></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier" for="id_ten_cay">Tên cây(<span style="color:red;">*</span>):</label></td>
+                                                                        <td style="width: 100%;"><input class="o_field_char o_field_widget o_input o_required_modifier" type="text" name="ten_cay"maxlength="100" required oninvalid="this.setCustomValidity('Vui lòng nhập tên cây.')" oninput="setCustomValidity('')" id="id_ten_cay"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier" for="id_loaicay_id">Loại cây(<span style="color:red;">*</span>):</label></td>
+                                                                        <td style="width: 100%;">
+                                                                            <select name="loaicay_id" required id="id_loaicay_id">
+                                                                                <option value="" selected>---------</option>
+                                                                                {% for loaig in loais %}
+                                                                                <option value="{{ loaig.ma_loai_cay}}">{{ loaig.ten_loai_cay}}</option>
+                                                                                {% endfor %}
+                                                                            </select><a class="related-widget-wrapper-link add-related"href="{% url 'qlcayxanh:addtypetrees' %}" onclick="return popitup2('/index/add_typetree')">
+                                                                               <img src="/static/admin/img/icon-addlink.svg" alt="Add"></a> 
+                                                                        </td>
+                                                                        
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier" for="id_chieucao">Chiều cao(cm)(<span style="color:red;">*</span>):</label></td>
+                                                                        <td style="width: 100%;"><input class="o_field_char o_field_widget o_input o_required_modifier" type="number" min="0"name="chieucao" required oninvalid="this.setCustomValidity('Vui lòng chiều cao cây.')" oninput="setCustomValidity('')"  id="id_chieucao" ></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label" for="id_vitri">Vị trí:</label></td>
+                                                                        <td style="width: 100%;"><input class="o_field_char o_field_widget o_input o_required_modifier" name="vitri" type="text" required oninvalid="this.setCustomValidity('Vui lòng nhập vị trí cây.')" oninput="setCustomValidity('')" maxlength="100"id="id_vitri"></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table><table class="o_group o_inner_group o_group_col_6"><tbody><tr>
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier" for="id_ngaytrong">Ngày trồng(<span style="color:red;">*</span>):</label></td>
+                                                                        <td style="width: 100%;"><input class="o_field_char o_field_widget o_input o_required_modifier" type="date" name="ngaytrong" required oninvalid="this.setCustomValidity('Vui lòng chọn ngày trồng cây.')" oninput="setCustomValidity('')" id="id_ngaytrong" value='{{placement.date|date:"Y-m-d" }}'></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label"  >Tình trạng(<span style="color:red;">*</span>):</label></td>
+                                                                        <td style="width: 100%;">
+                                                                            {{form.tinhtrang_id}}
+                                                                            <!-- Thêm  -->
+                                                                            <a class="related-widget-wrapper-link add-related"
+                                                                                href="{% url 'qlcayxanh:addcon' %}"onclick="return popitup2('/index/add_contree')"
+                                                                                title="Thêm tình trạng khác"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier" for="id_dacdiem">Đặc điểm:</label></td>
+                                                                        <td style="width: 100%;"><input class="o_field_char o_field_widget o_input o_required_modifier" type="text" name="dacdiem"maxlength="200" id="id_dacdiem" >
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier" for="id_duong_id">Tên đường(<span style="color:red;">*</span>):</label></td>
+                                                                        <td style="width: 100%;">
+                                                                            <select name="duong_id" required id="id_duong_id">
+                                                                                <option value="" selected>---------</option>
+                                                                                {% for duongg in duongs %}
+                                                                                <option value="{{ duongg.ma_duong}}">{{ duongg.ten_duong}}</option>
+                                                                                {% endfor %}
+                                                                            </select><a class="related-widget-wrapper-link add-related"href="{% url 'qlcayxanh:addstreets' %}" onclick="return popitup('/index/add_street')">
+                                                                               <img src="/static/admin/img/icon-addlink.svg" alt="Add"></a> 
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <div  class="post_name">
+                                                                <div>
+                                                                    <label class="required" for="id_geom">Geom:</label>
+                                                                    <style>
+                                                                        #id_geom-map { width: 100%; height: 400px;z-index: 100; }
+                                                                        #id_geom { display: none; }
+                                                                        /* Fixes for Django base.css */
+                                                                        .leaflet-draw ul {
+                                                                        margin-left: 0px;
+                                                                        padding-left: 0px;
+                                                                        }
+                                                                        .leaflet-draw ul.leaflet-draw-actions li {
+                                                                        list-style-type: none;
+                                                                        }
+                                                                    </style>
+                                                                    <script>
+                                                                        
+                                                                        var geodjango_id_geom = {};
+                                                                        geodjango_id_geom.fieldid = 'id_geom';
+                                                                        geodjango_id_geom.modifiable = true;
+                                                                        geodjango_id_geom.geom_type = 'Point';
+                                                                        geodjango_id_geom.srid = 4326;
+        
+                                                                        // Hiển thị các nút trên bản đồ
+                                                                        L.drawLocal.draw.toolbar.actions.title = "Hủy bản vẽ";
+                                                                        L.drawLocal.draw.toolbar.actions.text = "Hủy bỏ";
+                                                                        L.drawLocal.draw.toolbar.undo.title = "Xóa điểm cuối cùng đã vẽ";
+                                                                        L.drawLocal.draw.toolbar.undo.text = "Xóa điểm cuối cùng";
+                                                                        L.drawLocal.draw.toolbar.buttons.polyline = "Vẽ một đường đa giác";
+                                                                        L.drawLocal.draw.toolbar.buttons.polygon = "Vẽ một đa giác";
+                                                                        L.drawLocal.draw.toolbar.buttons.rectangle = "Vẽ một hình chữ nhật";
+                                                                        L.drawLocal.draw.toolbar.buttons.circle = "Vẽ một vòng tròn";
+                                                                        L.drawLocal.draw.toolbar.buttons.marker = "Vẽ một điểm đánh dấu";
+                                                                        L.drawLocal.draw.handlers.circle.tooltip.start = "Nhấp và kéo để vẽ vòng tròn.";
+                                                                        L.drawLocal.draw.handlers.marker.tooltip.start = "Nhấp vào bản đồ để đặt điểm đánh dấu.";
+                                                                        L.drawLocal.draw.handlers.polygon.tooltip.start = "Nhấp để bắt đầu vẽ hình.";
+                                                                        L.drawLocal.draw.handlers.polygon.tooltip.cont = "Nhấp để tiếp tục vẽ hình.";
+                                                                        L.drawLocal.draw.handlers.polygon.tooltip.end = "Nhấp vào điểm đầu tiên để đóng hình dạng này.";
+                                                                        L.drawLocal.draw.handlers.polyline.error = "<strong>Lỗi:</strong> các cạnh hình không thể cắt nhau!";
+                                                                        L.drawLocal.draw.handlers.polyline.tooltip.start = "Nhấp để bắt đầu vẽ đường.";
+                                                                        L.drawLocal.draw.handlers.polyline.tooltip.cont = "Nhấp để tiếp tục vẽ đường.";
+                                                                        L.drawLocal.draw.handlers.polyline.tooltip.end = "Nhấp vào điểm cuối cùng để hoàn thành dòng.";
+                                                                        L.drawLocal.draw.handlers.rectangle.tooltip.start = "Nhấp và kéo để vẽ hình chữ nhật.";
+                                                                        L.drawLocal.draw.handlers.simpleshape.tooltip.end = "Nhả chuột để hoàn thành bản vẽ.";
+        
+                                                                        L.drawLocal.edit.toolbar.actions.save.title = "Lưu thay đổi.";
+                                                                        L.drawLocal.edit.toolbar.actions.save.text = "Lưu lại";
+                                                                        L.drawLocal.edit.toolbar.actions.cancel.title = "Hủy chỉnh sửa, loại bỏ tất cả các thay đổi.";
+                                                                        L.drawLocal.edit.toolbar.actions.cancel.text = "Hủy bỏ";
+                                                                        L.drawLocal.edit.toolbar.buttons.edit = "Chỉnh sửa";
+                                                                        L.drawLocal.edit.toolbar.buttons.editDisabled = "Không có vùng nào để chỉnh sửa.";
+                                                                        L.drawLocal.edit.toolbar.buttons.remove = "Xóa";
+                                                                        L.drawLocal.edit.toolbar.buttons.removeDisabled = "Không có vùng nào để xóa.";
+                                                                        L.drawLocal.edit.handlers.edit.tooltip.text = "Drag handles, or marker to edit feature.";//Kéo tay cầm hoặc điểm đánh dấu để chỉnh sửa đối tượng địa lý.
+                                                                        L.drawLocal.edit.handlers.edit.tooltip.subtext = "Nhấp vào hủy để hoàn tác các thay đổi.";
+                                                                        L.drawLocal.edit.handlers.remove.tooltip.text = "Nhấp vào một tính năng để loại bỏ";
+        
+
+                                                                        
+                                                                        function id_geom_map_callback(map, options) {
+                                                                            geodjango_id_geom.store_class = L.FieldStore;
+                                                                            geodjango_id_geom.precision = options.djoptions.precision;
+                                                                            (new L.GeometryField(geodjango_id_geom)).addTo(map);
+                                                                            
+                                                                        };
+                                                                        
+                                                                        
+                                                                    </script>
+                                                                    <div id="id_geom-div-map">
+                                                                        <div id="id_geom-map" class="leaflet-container-default"></div>
+                                                                        <script>
+                                                                            (function () {
+                                                                            
+                                                                                function loadmap() {
+<!--                                                                               Thay đổi nền - lớp cơ sở cho bản đồ -->
+                                                                                    var baselayers = {
+                                                                                        'sat_text' :  L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
+                                                                                        maxZoom: 20,
+                                                                                        subdomains:['mt0','mt1','mt2','mt3'],
+                                                                                        minZoom: 5,
+                                                                                            })
+                                                                                    };
+
+                                                                                    var djoptions = {"srid": null, "extent": [[-90, -180], [90, 180]], "fitextent": true,"center": [15.5629911, 108.4835256], "zoom": 13, "precision": 6, "minzoom": 5, "maxzoom":20, "layers": baselayers, "overlays": [],  "scale": "both", "minimap": false, "resetview": true, "tilesextent": []},
+                                                                                        options = {djoptions: djoptions, initfunc: loadmap,
+                                                                                                   globals: false, callback: id_geom_map_callback},
+                                                                                        map = L.Map.djangoMap('id_geom-map', options);
+                                                                                        //    Hiển thị Quần đảo Hoàng Sa và Trường Sa
+                                                                                        var gIcon = L.icon({
+                                                                                            iconUrl: "/static/assets/images/vn.jpg",
+                                                                                            iconSize:     [40,20 ], // size of the ico
+                                                                                                });
+
+                                                                                        L.marker([16.482839176122983,111.719970703125], {icon: gIcon}).addTo(map).bindPopup("Quần Đảo Hoàng Sa");
+                                                                                        L.marker([10.719262873874907,115.83239144722667], {icon: gIcon}).addTo(map).bindPopup("Quần Đảo Trường Sa");
+                                                                                        baselayers.sat_text.addTo(map);
+                                                                                }
+                                                                                var loadevents = ["load"];
+                                                                                if (loadevents.length === 0) loadmap();
+                                                                                else if (window.addEventListener) for (var i=0; i<loadevents.length; i++) window.addEventListener(loadevents[i], loadmap, false);
+                                                                                else if (window.jQuery) jQuery(window).on(loadevents.join(' '), loadmap);
+                                                                                
+                                                                            })();
+                                                                        </script>
+                                                                    </div>
+                                                                    <textarea id="id_geom" class="required django-leaflet-raw-textarea" cols="150" rows="10" name="geom"></textarea>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div style="text-align:center;margin-top:50px;">
+
+                                                                <span class="badge badge-danger" style=" font-size:12px;">Trường có dấu (*) bắt buột phải nhập.</span>
+                                                            </div>
+                                                            <div class="post_center">
+                                                                <button class="submit-btn" type="submit" >Thêm</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <a class="quayve" href="{% url 'qlcayxanh:listtrees' %}">Quay về danh sách</a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                    -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        {% include 'include/filescript.html' %}
+        <script src="{% static 'home/trees/js/validuser.js' %}"></script>
+        <script language="javascript" type="text/javascript">
+            function popitup(url) {
+                newwindow=window.open(url,'{{title}}','height=600,width=1000');
+                if (window.focus) {newwindow.focus()}
+                return false;
+            }
+            </script>
+         <script src="{% static 'home/trees/js/validuser.js' %}"></script>
+         <script language="javascript" type="text/javascript">
+             function popitup2(url) {
+                 newwindow=window.open(url,'{{title}}','height=320,width=800');
+                 if (window.focus) {newwindow.focus()}
+                 return false;
+             }
+             </script>
+ 
+
+        
+    </body>
+</html>

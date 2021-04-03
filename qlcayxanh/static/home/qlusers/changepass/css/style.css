@@ -1,0 +1,89 @@
+
+            .contact-form .form-field {
+            position: relative;
+            }
+            label{
+            float:left;
+            }
+            .get-in-touch{
+            text-align: center;
+            }
+            input[type=password] {
+            color:blue;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+            font-size: 18px;
+            line-height: 26px;
+            font-weight: 400;
+            }
+            .contact-form #id_old_password:focus {
+            outline: none;
+            }
+            .contact-form #id_old_password:focus + .label,
+            .contact-form .input-password.not-empty + .label {
+            -webkit-transform: translateY(-24px);
+            transform: translateY(-24px);
+            }
+            .contact-form #id_new_password1:focus {
+            outline: none;
+            }
+            .contact-form #id_new_password1:focus + .label,
+            .contact-form .input-password.not-empty + .label {
+            -webkit-transform: translateY(-24px);
+            transform: translateY(-24px);
+            }.contact-form #id_new_password2:focus {
+            outline: none;
+            }
+            .contact-form #id_new_password2:focus + .label,
+            .contact-form .input-password.not-empty + .label {
+            -webkit-transform: translateY(-24px);
+            transform: translateY(-24px);
+            }
+            .contact-form .submit-btn {
+            display: inline-block;
+            background-color:  #8BC34A;
+            color: #fff;
+            letter-spacing: 2px;
+            font-size: 16px;
+            padding: 8px 8px;
+            border: none;
+            width:150px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            }
+            input[type=password]:focus {
+             border-width: 0 0 2px 0;
+                     border-color: #8BC34A;
+                }
+        .submit-btn:hover{background-color:#446919;border-color:#446919;}
+             .contact-form .cancel-btn {
+            display: inline-block;
+            color: black;
+            font-size: 16px;
+            padding: 8px 8px;
+            border: none;
+            width:80px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            }
+            .center{
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            }
+            ul.errorlist li {
+            float:left;
+            list-style: none;
+            margin:0;
+            padding:0;
+            color:red;
+            }
+           a:focus, a:hover {
+            background-color: #446919;
+                text-decoration: none;
+            }
+

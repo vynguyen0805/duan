@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    {% load leaflet_tags %}
+    <head>
+        {% leaflet_js %}
+        {% leaflet_css %}
+     {% include 'include/includecss.html' %}
+
+    <link rel="stylesheet"  href="{% static 'home/tcotrees/css/bootstrap.css' %}"  />
+    <!-- Custom Styles-->
+    <link rel="stylesheet"  href="{% static 'home/css/menu.css' %}"  />
+    <link rel="stylesheet"  href="{% static 'home/tcotrees/css/addtcotree.css' %}"  />
+    <link type="text/css" rel="stylesheet" href="{% static 'home/tcotrees/css/web.assets_common.0.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'home/tcotrees/css/web.assets_backend.0.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'home/tcotrees/css/web.assets_backend.1.css' %}"/>
+    <!-- show map -->
+    <script src="{% static 'home/tcotrees/css/jsi18n/' %}">  </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/ol3/4.6.5/ol.css" type="text/css" media="all" rel="stylesheet">
+    <link  href="{% static 'home/tcotrees/css/ol3.css' %}"  type="text/css" media="all" rel="stylesheet" />
+    <script src="{% static 'home/tcotrees/js/jquery.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/ol.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/jquery.init.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/OLMapWidget.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/core.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/RelatedObjectLookups.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/actions.js/' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/urlify.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/prepopulate.js' %}">  </script>
+    <script src="{% static 'home/tcotrees/js/xregexp.js' %}">  </script>
+    </head>
+    <body>
+        <div id="wrapper">
+            {% include 'include/base.html' %}
+            <div id="page-wrapper">
+                <div class="header">
+                    <div class="row user-infos cyruxx">
+                        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1"></div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h1 class="panel-title">Thêm chăm sóc cây</h1>
+                            </div>
+                            <div class="panel-body">
+                                {% if form.errors %}
+                                {% for field in form %}
+                                {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                                {% endfor %}
+                                {% endfor %}
+                                {% endif %}
+                                <!-- DỰ ÁN MỚI -->
+                                <div class="o_content">
+                                    <div class="o_view_controller">
+                                        <div class="o_form_view o_form_editable">
+                                            <div class="o_form_sheet_bg">
+                                                <div class="clearfix o_form_sheet">
+                                                    <div class="o_group">
+                                                        <form class="form-inline my-2 my-lg-0"   method="POST">
+                                                            {% csrf_token %}
+                                                            <table class="o_group o_inner_group o_group_col_6">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier"  for="id_cong_viec">Công việc(<span style="color:red;">*</span>):</label></td>
+                                                                        <td style="width: 100%;"><input class="o_field_char o_field_widget o_input o_required_modifier" type="text" name="cong_viec" maxlength="100" required id="id_cong_viec" ></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier" for="id_ngay_cham_soc">Ngày chăm sóc(<span style="color:red;">*</span>):</label></td>
+                                                                        <td style="width: 100%;"><input class="o_field_char o_field_widget o_input o_required_modifier" type="date" name="ngay_cham_soc" id="id_ngay_cham_soc" value='{{placement.date|date:"Y-m-d" }}'></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table><table class="o_group o_inner_group o_group_col_6"><tbody>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier"  for="id_nhanvien_id">Nhân viên(<span style="color:red;">*</span>):</label></td>
+                                                                        <td style="width: 100%;">
+                                                                            <select name="nhanvien_id" required id="id_nhanvien_id">
+                                                                                <option value="" selected>---------</option>
+                                                                                {% for nhanvieng in nhanviens %}
+                                                                                <option value="{{ nhanvieng.ma_nhan_vien}}">{{ nhanvieng.hoten}}</option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                            <!-- Thêm nhân viên -->
+                                                                            <a class="related-widget-wrapper-link add-related"
+                                                                            href="{% url 'qlcayxanh:addstaffs' %}"onclick="return popitup('/index/add_staff')"
+                                                                            title="Thêm nhân viên khác"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="o_td_label"><label class="o_form_label o_required_modifier" for="id_cayxanh_id">Cây xanh(<span style="color:red;">*</span>):</label></td>
+                                                                        <td style="width: 100%;">
+                                                                            <select name="cayxanh_id" required id="id_cayxanh_id">
+                                                                                <option value="" selected>---------</option>
+                                                                                {% for treesg in trees %}
+                                                                                <option value="{{ treesg.ma_cay}}">{{ treesg.ma_cay}}</option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                           <!-- Thêm cây -->
+                                                                           <a class="related-widget-wrapper-link add-related"
+                                                                           href="{% url 'qlcayxanh:addcayxanh' %}"onclick="return popitup1('/index/add_tree')"
+                                                                           title="Thêm cây xanh khác"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                               
+                                                    </table>
+                                                    <div style="text-align:center;">
+                                                        <span class="badge badge-danger" style=" font-size:12px;">Trường có dấu (*) bắt buột phải nhập.</span>
+                                                    </div>
+                                                    <div class="post_center">
+                                                        <button class="submit-btn" type="submit" >Thêm</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <a class="quayve" href="{% url 'qlcayxanh:lists_tcotrees' %}">Quay về danh sách</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--                    -->
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+    <script language="javascript" type="text/javascript">
+    function popitup(url) {
+        newwindow=window.open(url,'{{title}}','height=626,width=1000');
+        if (window.focus) {newwindow.focus()}
+        return false;
+    }
+    </script>
+    <script language="javascript" type="text/javascript">
+        function popitup1(url) {
+            newwindow=window.open(url,'{{title}}','height=600,width=1200');
+            if (window.focus) {newwindow.focus()}
+            return false;
+        }
+    </script>
+        {% include 'include/filescript.html' %}
+    <script src="{% static 'home/tcotrees/js/validuser.js' %}"></script>
+    </body>
+</html>
+                

@@ -1,0 +1,150 @@
+<style>
+</style>
+{% load static %}
+<nav class="navbar navbar-default top-navbar" role="navigation">
+    <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+    </div>
+    <ul class="nav navbar-top-links navbar-right">
+       
+        <!-- /.dropdown -->
+     
+        <!-- /.dropdown -->
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+               <i class="fa fa-comments-o" aria-hidden="true"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li><a href="" >
+                    Không có thông báo.
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!-- /.dropdown -->
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+            <img src="{% static 'home/img/7.jpg' %}" alt="user" class="profile-pic me-2"> {{user}} <i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li><a href="" data-toggle="modal" data-target="#userprofile"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                    Thông tin người dùng
+                    </a>
+                </li>
+                <li><a href="{% url 'qlcayxanh:change_password' %}"  ><i class="fa fa-cog fa-spin"></i>
+                    Đổi mật khẩu
+                    </a>
+                </li>
+                 {% if user.is_superuser  %}
+                <li><a href="{% url 'qlcayxanh:users' %}" ><i class="fa fa-users" aria-hidden="true"></i>
+                    Tài khoản hệ thống
+                    </a>
+                </li>
+                {% endif %}
+                <li class="divider"></li>
+                <li><a href="{% url 'logout' %}"><i class="fa fa-power-off text-danger"></i> Đăng xuất</a>
+                </li>
+            </ul>
+            <!-- /.dropdown-user -->
+        </li>
+        <!-- Đăng xuất -->
+        <li class="dropdown">
+            <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out text-danger"></i></a>
+            <!-- /.dropdown-alerts -->
+        </li>
+        <!-- /.dropdown -->
+    </ul>
+</nav>
+<!--/. NAV TOP  -->
+<nav class="navbar-default navbar-side" role="navigation">
+    <div class="sidebar-collapse force-scroll" id="#style-1">
+        <ul class="nav" id="main-menu">
+            <li>
+                <img class='img' src="{% static 'home/img/logo2.png' %}"/>
+            </li>
+            <li>
+                <a href="{% url 'index' %}"><i class="fa fa-home" aria-hidden="true"></i>Trang chủ</a>
+            </li>
+            <li>
+                <a href="{% url 'qlcayxanh:map' %}"><i class="fa fa-globe" aria-hidden="true"></i>Bản đồ</a>
+            </li>
+             {% if user.is_superuser %}
+            <li>
+                <a href="{% url 'qlcayxanh:lists_staff' %}"><i class="fa fa-users" aria-hidden="true"></i>Quản lý nhân viên</a>
+            </li>
+             {% endif %}
+            <!-- Quản lý dữ liệu -->
+            <li>
+                <a  href="#"><i class="fa fa-chain-broken" aria-hidden="true"></i>Quản lý dữ liệu<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                     <li>
+                        <a href="{% url 'qlcayxanh:boundarys' %}">Ranh giới</a>
+                    </li>
+                     <li>
+                        <a href="{% url 'qlcayxanh:liststreets' %}">Đường giao thông</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'qlcayxanh:listtrees' %}">Cây</a>
+                    </li>
+
+
+                </ul>
+            </li>
+            <!-- Quản lý chăm soc cây	 -->
+            <li>
+                <a href="{% url 'qlcayxanh:lists_tcotrees' %}"><i class="fa fa-pagelines" aria-hidden="true"></i>Chăm sóc cây</a>
+            </li>
+<!--            Thống kê/ báo cáo-->
+            <li>
+                <a href=" {% url 'qlcayxanh:statis' %}"><i class="fa fa-stack-exchange" aria-hidden="true"></i>Thống kê</a>
+            </li>
+            <!-- Tương tác bản đồ -->
+
+            <!-- Tìm kiếm  -->
+
+            <!-- Thư viện -->
+
+        </ul>
+    </div>
+</nav>
+<!-- /. NAV SIDE  -->
+<!-- Modal  thôgn tin người dùng-->
+<div class="modal fade" id="userprofile" tabindex="-1" role="dialog" aria-labelledby="userprofileLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" style="text-align:center;color:#8BC34A; " id="userprofileLabel">Thông tin người dùng
+                </h4>
+                <button style=" margin-top: -25px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-user-information">
+                    <tbody>
+                        <tr>
+                            <td >Tên đăng nhập:</td>
+                            <td >{{ user }}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-top: 1px solid #ddd;">Họ và tên:</td>
+                            <td style="border-top: 1px solid #ddd;">{{ user.last_name }} {{ user.first_name }}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-top: 1px solid #ddd;">Email:</td>
+                            <td style="border-top: 1px solid #ddd;">{{ user.email }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

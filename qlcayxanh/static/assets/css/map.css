@@ -94,20 +94,64 @@
   height: 30px;
   }
 .statiss a {
-  border-bottom: 1px solid #ccc;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-  display: block;
-  text-align: center;
-  text-decoration: none;
-  color: black;
-  background-size: 16px 16px;
+    border-bottom: 1px solid #ccc;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    background-size: 16px 16px;
     display: block;
     border-radius: 2px;
+    background-color: #fff;
 }
 .statiss a:hover {
   background-color: rgb(243, 241, 241);
 }
-  
-  
+.leaflet-tooltip.my-labels {
+      background-color: transparent;
+      border: transparent;
+      box-shadow: none;
+      font-weight: bold;
+      font-size: 13px;
+      color:#2196f3;
+      text-transform: uppercase;
+      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+      }
+.marker-pin {
+    z-index: 429;
+    width: 20px;
+    height: 20px;
+    border-radius: 50% 50% 50% 50%;
+    background: #11ca11;
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 50%;
+    top: 50%;
+    margin-left: -10px;
+    margin-top: 10px;
+}
+
+.marker-pin::after {
+    content: '';
+    width: 24px;
+    height: 24px;
+    margin: 3px 0 0 3px;
+
+    position: absolute;
+    border-radius: 50%;
+}
+
+
+.custom-div-icon i {
+    position: absolute;
+    width: 22px;
+    font-size: 22px;
+    left: 0;
+    right: 0;
+    margin: 10px auto;
+    text-align: center;
+}
+

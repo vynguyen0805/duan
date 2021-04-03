@@ -61,17 +61,8 @@
             a.leaflet-bar-part{
             display:none;
             }
-            .leaflet-label-marker {
-  background-color: #fefdcb;
-  border: 3px solid black;
-  border-radius: 0;
-  color: black;
-  font-weight: 500;
-  opacity: 1;
-  padding: 3px;
-}
+
         </style>
-        <!--  -->
     </head>
     <body>
         <div id="wrapper">
@@ -282,7 +273,7 @@
         <!-- show data -->
         <script type="text/javascript">
             function our_layers(map,options){
-              
+
             //    Hiển thị Quần đảo Hoàng Sa và Trường Sa
                     var gIcon = L.icon({
                         iconUrl: "/static/assets/images/vn.jpg",
@@ -291,10 +282,10 @@
             L.marker([16.482839176122983,111.719970703125], {icon: gIcon}).addTo(map).bindPopup("Quần Đảo Hoàng Sa");
             L.marker([10.719262873874907,115.83239144722667], {icon: gIcon}).addTo(map).bindPopup("Quần Đảo Trường Sa");
             //---------------------------------------------------------/
-            //    child show cây xanh    
+            //    child show cây xanh
             var child1 = new L.GeoJSON.AJAX("{% url 'qlcayxanh:childtree' %}",{
                             onEachFeature: function(feature,layer){
-                                layer.setIcon(greenIcon);
+                                layer.setIcon(icon);
                                 var featureDate = new Date(feature.properties.ngaytrong);//định dạng ngày d/m/y
                                 layer.on('click', function(e) {
                                         lat = feature.geometry.coordinates[1];//click hiển thị view tới vị trí zoom
@@ -314,12 +305,24 @@
                                              );
                                                 
                                                 
-                            },           
+                            },
                         });
+<!--          icon cây xanh             -->
+                var icon = L.divIcon({
+                    className: 'custom-div-icon',
+                    html: "<div class='marker-pin'></div><i class='material</i>",
+                    iconSize: [30, 42],
+                    iconAnchor: [15, 42]
+                });
             // end var
+                 var cssstreet = {
+                      "color": "red",
+                      "weight":6,
+                      "z-index": 600
+                    };
             //    child show đường giao thông  
                     var child2 = new L.GeoJSON.AJAX("{% url 'qlcayxanh:childstreet'%}",{
-                        color:"red",
+                       style: cssstreet,
                                 onEachFeature: function(feature,layer){
                                     layer.on('click', function (e) {
                                         map.setView(e.latlng, 18)
@@ -336,8 +339,9 @@
                   var labels = {};
             //    child show ranh giới  
                     var child3 = new L.GeoJSON.AJAX("{% url 'qlcayxanh:childboun'%}",{
+                   fillColor:'rgba(255,0,0,0.0)',
                                 onEachFeature: function(feature,layer){
-
+                                    layer.bindTooltip("<div>" +feature.properties.type_ranh_gioi+ ' '+feature.properties.ten_ranh_gioi+ "</div>", { direction: 'center',className: 'my-labels' ,permanent : true}).openTooltip();
                                     layer.on('click', function (e) {
                                         map.setView(e.latlng, 18)
                                         });
@@ -350,21 +354,11 @@
                             });
 
             // end var
-            var greenIcon = new L.Icon({
-                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                    iconSize: [25, 41],
-                    iconAnchor: [12, 41],
-                    popupAnchor: [1, -34],
-                    shadowSize: [41, 41]
-                    });
-            
-                    // click 
-
+                    // click bảng
                     {% for item in listtrees %}
                     var child{{item.ma_cay}}= new L.GeoJSON.AJAX("{% url 'qlcayxanh:class' id=item.ma_cay %}",{
                         onEachFeature: function(feature,layer){
-                            layer.setIcon(greenIcon);
+                            layer.setIcon(icon);
                             layer.on('click', function(e) {
                                         lat = feature.geometry.coordinates[1];
                                         lng = feature.geometry.coordinates[0];          
@@ -375,31 +369,20 @@
                     });
                     {% endfor %}
             // end click
-            
-                
                 var baseLayers = {
-                
                 };
-               
-                // var group
                  // var group
                 var groupedOverlays = {
                     "Lớp dữ liệu": {
-                    
                         "<i class='	fa fa-map-marker'></i> Lớp cây xanh": child1,
                         "<i class='	fa fa-line-chart'></i> Lớp đường giao thông": child2,
                         "<i class=' fa fa-industry'></i> Lớp ranh giới": child3,
                     }   
                     };
-                   
             //end var 
              // zoom control options
-            
-            
                 L.control.browserPrint({title: 'In',documentTitle: 'WEBGIS-QUẢN LÝ CÂY XANH ĐÔ THỊ QUẢNG NAM'}).addTo(map)
                 L.control.groupedLayers(baseLayers,groupedOverlays).addTo(map);
-            
-                
                 // 
                 var markers = {};
             
@@ -476,7 +459,7 @@
                     ////////////Hiển thị checked dữ liệu            
                         markersLayer.addLayer(child1);
                         markersLayer.addLayer(child2);
-                        markersLayer.addLayer(child3).bindLabel('Look revealing label!');
+                        markersLayer.addLayer(child3);
                     // end tìm kiếm
 
 
